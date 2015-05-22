@@ -3,22 +3,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JScrollPane;
+
+import net.miginfocom.swing.MigLayout;
 
 public class GUI {
 
 	private JFrame frame;
-	private JTextField txtFilepath;
+	private ImageIcon icon;
+	private JScrollPane scrollPane;
 	private JTextArea txtrLog;
 	private JTextPane txtpnInfobox;
-	private JButton btnLoad;
+	private JTextField txtFilepath;
 	private JButton btnChoose;
+	private JButton btnLoad;
 	private JFileChooser chooser;
+	
 
 	/**
 	 * Launch the application.
@@ -47,38 +54,38 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// main frame
 		frame = new JFrame();
 		frame.setBounds(100, 100, 600, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		icon = new ImageIcon(getClass().getResource("/graphics/dna.png"));
+		frame.setIconImage(icon.getImage());
+		frame.setTitle("DNA Assembler");
+		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n]", "[50px:n][grow][30px:n][30px:n]"));
 		
-		btnLoad = new JButton("load");
-		btnLoad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				log("loading " + txtFilepath.getText());
-			}
-		});
-		btnLoad.setBounds(463, 415, 107, 25);
-		frame.getContentPane().add(btnLoad);
+		// scroll layout
+		scrollPane = new JScrollPane();
+		frame.getContentPane().add(scrollPane, "cell 0 0 2 4,grow");
 		
-		txtFilepath = new JTextField();
-		txtFilepath.setText("input file");
-		txtFilepath.setBounds(354, 390, 216, 22);
-		frame.getContentPane().add(txtFilepath);
-		txtFilepath.setColumns(1);
-		
+		// text area in scroll layout
 		txtrLog = new JTextArea();
 		txtrLog.setText("Welcome!");
-		txtrLog.setBounds(0, 0, 342, 453);
 		txtrLog.setEditable(false);
-		frame.getContentPane().add(txtrLog);
-		
+		scrollPane.setViewportView(txtrLog);
+
+		// info text box
 		txtpnInfobox = new JTextPane();
 		txtpnInfobox.setText("infobox");
-		txtpnInfobox.setBounds(352, 13, 218, 116);
 		txtpnInfobox.setEditable(false);
-		frame.getContentPane().add(txtpnInfobox);
+		frame.getContentPane().add(txtpnInfobox, "cell 2 0 2 1,grow");
+
+		// filepath text field
+		txtFilepath = new JTextField();
+		txtFilepath.setText("input file");
+		txtFilepath.setColumns(1);
+		frame.getContentPane().add(txtFilepath, "cell 2 2 2 1,growx");
 		
+		// button to choose file
 		btnChoose = new JButton("select");
 		btnChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -89,14 +96,21 @@ public class GUI {
 		        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 		        	txtFilepath.setText(chooser.getSelectedFile().getAbsoluteFile().getPath());
 		        }
-			}});
-		btnChoose.setBounds(354, 415, 107, 25);
-		frame.getContentPane().add(btnChoose);
+		}});
+		frame.getContentPane().add(btnChoose, "cell 2 3");
+		
+		// load button
+		btnLoad = new JButton("load");
+		btnLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				log("loading " + txtFilepath.getText());
+			}
+		});
+		frame.getContentPane().add(btnLoad, "cell 3 3");
 	}
 	
 	public void log(String text) {
 		if (txtrLog == null) return;
 		txtrLog.setText(txtrLog.getText() + "\n" + text);
 	}
-
 }
