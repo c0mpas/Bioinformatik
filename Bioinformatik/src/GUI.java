@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +26,7 @@ public class GUI {
 	private JButton btnChoose;
 	private JButton btnLoad;
 	private JFileChooser chooser;
+	private JButton btnClearLog;
 	
 
 	/**
@@ -61,11 +63,11 @@ public class GUI {
 		icon = new ImageIcon(getClass().getResource("/graphics/dna.png"));
 		frame.setIconImage(icon.getImage());
 		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n]", "[50px:n][grow][30px:n][30px:n]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][grow 50][50px:n]", "[50px:n][grow][50px:n][grow][][][10px:n][30px:n][30px:n]"));
 		
 		// scroll layout
 		scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, "cell 0 0 2 4,grow");
+		frame.getContentPane().add(scrollPane, "cell 0 0 2 9,grow");
 		
 		// text area in scroll layout
 		txtrLog = new JTextArea();
@@ -77,40 +79,85 @@ public class GUI {
 		txtpnInfobox = new JTextPane();
 		txtpnInfobox.setText("infobox");
 		txtpnInfobox.setEditable(false);
-		frame.getContentPane().add(txtpnInfobox, "cell 2 0 2 1,grow");
+		frame.getContentPane().add(txtpnInfobox, "cell 2 0 3 3,grow");
+		
+		// clear log button
+		btnClearLog = new JButton("clear log");
+		btnClearLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearLog();
+			}
+		});
+		frame.getContentPane().add(btnClearLog, "cell 2 5");
 
 		// filepath text field
 		txtFilepath = new JTextField();
 		txtFilepath.setText("input file");
 		txtFilepath.setColumns(1);
-		frame.getContentPane().add(txtFilepath, "cell 2 2 2 1,growx");
+		frame.getContentPane().add(txtFilepath, "cell 2 7 3 1,growx");
 		
 		// button to choose file
-		btnChoose = new JButton("select");
+		btnChoose = new JButton("select file");
 		btnChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				chooser = new JFileChooser();
-				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				chooser.setMultiSelectionEnabled(false);
-				chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-		        	txtFilepath.setText(chooser.getSelectedFile().getAbsoluteFile().getPath());
-		        }
+				chooseFile();
 		}});
-		frame.getContentPane().add(btnChoose, "cell 2 3");
+		frame.getContentPane().add(btnChoose, "cell 2 8,alignx left,aligny center");
 		
 		// load button
-		btnLoad = new JButton("load");
+		btnLoad = new JButton("load file");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				log("loading " + txtFilepath.getText());
+				loadFile();
 			}
 		});
-		frame.getContentPane().add(btnLoad, "cell 3 3");
+		frame.getContentPane().add(btnLoad, "cell 4 8,alignx right,aligny center");
+	}
+	
+	private void chooseFile() {
+		chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        	txtFilepath.setText(chooser.getSelectedFile().getAbsoluteFile().getPath());
+        }
+        log("file chosen: " + txtFilepath.getText());
+	}
+	
+	private void loadFile() {
+		String path = txtFilepath.getText();
+		if (path == null) {
+			log("invalid file path");
+			return;
+		}
+		log("loading " + path);
+		ArrayList<String> list = null;
+		try {
+			list = Parser.parse(path);
+		} catch (Exception e) {
+			log(e.toString());
+		}
+		if (list == null) {
+			log("error loading file");
+		} else {
+			log("load successful");
+			log(Parser.salvage(list.toString()));
+		}
 	}
 	
 	public void log(String text) {
 		if (txtrLog == null) return;
-		txtrLog.setText(txtrLog.getText() + "\n" + text);
+		String log = txtrLog.getText();
+		if (log.isEmpty()) {
+			txtrLog.setText(text);
+		} else {
+			txtrLog.setText(log + "\n" + text);
+		}
+	}
+	
+	private void clearLog() {
+		if (txtrLog == null) return;
+		txtrLog.setText(null);
 	}
 }

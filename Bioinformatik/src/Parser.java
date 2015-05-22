@@ -10,8 +10,9 @@ public class Parser {
 	private static final PrintStream out = System.err;
 	
 	public static final ArrayList<String> parse(String filename) {
+		if (filename == null) throw new RuntimeException("filename empty");
 		File file = new File(filename);
-        if (!file.canRead() || !file.isFile()) System.exit(0);
+        if (!file.canRead() || !file.isFile()) throw new RuntimeException("invalid file");
         BufferedReader in = null;
         ArrayList<String> list = new ArrayList<String>();
         
@@ -40,6 +41,14 @@ public class Parser {
 	private static final boolean isValid(String s) {
 		if (s == null || s.isEmpty()) return false;
 		return true;
+	}
+	
+	public static final String salvage(String s) {
+		if (s == null) {
+			return "";
+		} else {
+			return s.replace(", ", "\n");
+		}
 	}
 		
 }
