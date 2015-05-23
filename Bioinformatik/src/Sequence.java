@@ -51,15 +51,10 @@ public class Sequence {
 		int ownLength = this.seq.length();
 		int foreignLength = s.getSequence().length();
 		int length = (ownLength < foreignLength) ? ownLength : foreignLength;
-		int count = 0;
-		for (int i = 0; i < length; i++) {
-			if (this.suffix(i) == s.prefix(i)) {
-				count++;
-			} else {
-				return count;
-			}
+		for (int i = length-1; i > 0; i--) {
+			if (this.suffix(i) == s.prefix(i)) return i;
 		}
-		return count;
+		return 0;
 	}
 	
 	// returns prefix of length n
