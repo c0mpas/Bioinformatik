@@ -51,5 +51,4 @@ public class Node {
 	public boolean equals(Node node){
 		return this.getSequence().equals(node.getSequence());
 	}
-	
 }

@@ -33,4 +33,13 @@ public class Edge {
 	public int getWeight() {
 		return this.weight;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(this.from.getSequence().getSequence());
+		sb.append("---").append(this.weight);
+		sb.append("--->").append(this.to.getSequence().getSequence());
+		sb.append("]\n");
+		return sb.toString();
+	}
 }

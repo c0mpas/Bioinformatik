@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -25,13 +26,15 @@ public class GUI {
 	private ImageIcon icon;
 	private JScrollPane scrollPane;
 	private JTextArea txtrLog;
-	private JTextPane txtpnInfobox;
+	private JLabel labelInfobox;
 	private JTextField txtFilepath;
 	private JButton btnChoose;
 	private JButton btnLoad;
 	private JFileChooser chooser;
 	private JButton btnClearLog;
 	private JButton btnShowGraph;
+	private JButton btnSortEdges;
+	private JLabel labelLog;
 	
 	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
@@ -69,28 +72,36 @@ public class GUI {
 	private void initialize() {
 		// main frame
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 500);
+		frame.setBounds(100, 100, 600, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		icon = new ImageIcon(getClass().getResource("/graphics/dna.png"));
 		frame.setIconImage(icon.getImage());
 		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][grow][50px:n]", "[50px:n][grow][50px:n][grow][][][10px:n][30px:n][30px:n]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[50px:n,grow][50px:n,grow][50px:n][grow][50px:n]", "[20px:n][grow][50px:n][grow][][][10px:n][30px:n][30px:n]"));
+		
+		// text pane
+		labelLog = new JLabel();
+		labelLog.setHorizontalAlignment(JLabel.CENTER);
+		labelLog.setVerticalAlignment(JLabel.CENTER);
+		labelLog.setText("Log");
+		frame.getContentPane().add(labelLog, "cell 0 0 2 1,grow");
 		
 		// scroll layout
 		scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, "cell 0 0 2 9,grow");
+		frame.getContentPane().add(scrollPane, "cell 0 1 2 8,grow");
 		
 		// text area in scroll layout
 		txtrLog = new JTextArea();
-		txtrLog.setText("Welcome!");
+		txtrLog.setText("\nWelcome!");
 		txtrLog.setEditable(false);
 		scrollPane.setViewportView(txtrLog);
 
 		// info text box
-		txtpnInfobox = new JTextPane();
-		txtpnInfobox.setText("infobox");
-		txtpnInfobox.setEditable(false);
-		frame.getContentPane().add(txtpnInfobox, "cell 2 0 3 3,grow");
+		labelInfobox = new JLabel();
+		labelInfobox.setHorizontalAlignment(JLabel.CENTER);
+		labelInfobox.setVerticalAlignment(JLabel.TOP);
+		labelInfobox.setText("infobox");
+		frame.getContentPane().add(labelInfobox, "cell 2 0 3 3,grow");
 		
 		// clear log button
 		btnClearLog = new JButton("clear log");
@@ -99,6 +110,18 @@ public class GUI {
 				clearLog();
 			}
 		});
+		
+		btnSortEdges = new JButton("sort edges");
+		btnSortEdges.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (dnaGraph == null) {
+					log("missing graph");
+				} else {
+					log(dnaGraph.getEdges().toString());
+				}
+			}
+		});
+		frame.getContentPane().add(btnSortEdges, "cell 4 4,alignx right");
 		frame.getContentPane().add(btnClearLog, "cell 2 5");
 		
 		// button to show graph
@@ -171,13 +194,10 @@ public class GUI {
 	}
 	
 	public void log(String text) {
-		if (txtrLog == null) return;
-		String log = txtrLog.getText();
-		if (log.isEmpty()) {
-			txtrLog.setText(text);
-		} else {
-			txtrLog.setText(log + "\n" + text);
-		}
+		if (txtrLog==null || text.isEmpty()) return;
+		// java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
+		// timestamp.setNanos(0);
+		txtrLog.append("\n" + text);
 	}
 	
 	private void clearLog() {
@@ -210,9 +230,6 @@ public class GUI {
 			}
 		}
 		
-        //for (org.graphstream.graph.Node n : graph) n.addAttribute("ui.label", n.getId());
-        //for (org.graphstream.graph.Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
-        
         viewer = graph.display();
         viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
 	}

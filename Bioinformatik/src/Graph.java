@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Graph {
 
@@ -43,5 +45,24 @@ public class Graph {
 		// merge node a and b to new node n
 		// connect(n);
 		// todo
+	}
+	
+	// return a sorted list of all edges
+	public ArrayList<Edge> getEdges() {
+		ArrayList<Edge> list = new ArrayList<Edge>();
+		for (Node n : this.nodes) {
+			for (Edge e : n.getEdges()) list.add(e);
+		}
+		// sort list
+		Collections.sort(list, new Comparator<Edge>() {
+		        @Override
+		        public int compare(Edge a, Edge b) {
+		            if (a.getWeight() > b.getWeight()) return -1;
+		            else if (a.getWeight() < b.getWeight()) return 1;
+		            else return 0;
+		        }
+		    });
+		System.out.println(list);
+		return list;
 	}
 }
