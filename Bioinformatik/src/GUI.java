@@ -105,8 +105,11 @@ public class GUI {
 		btnShowGraph = new JButton("show graph");
 		btnShowGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// showDummyGraph();
-				showGraph(dnaGraph);
+				try {
+					showGraph(dnaGraph);
+				} catch (Exception e) {
+					log(e.toString());
+				}
 			}
 		});
 		frame.getContentPane().add(btnShowGraph, "cell 4 5,alignx right");
@@ -187,6 +190,7 @@ public class GUI {
 	}
 	
 	private void showGraph(Graph g) {
+		if (g == null) throw new RuntimeException("graph is null");
 		graph = new MultiGraph("graph");
 		graph.addAttribute("ui.stylesheet", graphStyle);
 		
