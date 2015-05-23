@@ -70,7 +70,7 @@ public class Sequence {
 	
 	// returns suffix of length n
 	private String suffix(int n) {
-		if (n < this.seq.length()) throw new RuntimeException("invalid index");
+		if (n > this.seq.length()) throw new RuntimeException("invalid index");
 		return this.seq.substring(this.seq.length()-1-n, this.seq.length()-1);
 	}
 	
