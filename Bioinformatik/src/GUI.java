@@ -161,7 +161,7 @@ public class GUI {
 			log("error loading file");
 		} else {
 			log("load successful");
-			log(Parser.salvage(list.toString()));
+			createGraph(list);
 		}
 	}
 	
@@ -178,6 +178,11 @@ public class GUI {
 	private void clearLog() {
 		if (txtrLog == null) return;
 		txtrLog.setText(null);
+	}
+	
+	private void createGraph(ArrayList<Sequence> list) {
+		Graph g = new Graph(list);
+		showGraph(g);
 	}
 	
 	private void showGraph(Graph g) {
