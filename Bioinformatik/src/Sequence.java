@@ -52,20 +52,20 @@ public class Sequence {
 		int foreignLength = s.getSequence().length();
 		int length = (ownLength < foreignLength) ? ownLength : foreignLength;
 		for (int i = length-1; i > 0; i--) {
-			if (this.suffix(i) == s.prefix(i)) return i;
+			if (this.suffix(i) == s.prefix(i)) return ++i;
 		}
 		return 0;
 	}
 	
 	// returns prefix of length n
 	private String prefix(int n) {
-		if ((n < 0) || (n > this.seq.length())) throw new RuntimeException("invalid index");
-		return this.seq.substring(0, n);
+		if ((n < 1) || (n > this.seq.length())) throw new RuntimeException("invalid index");
+		return this.seq.substring(0, n-1);
 	}
 	
 	// returns suffix of length n
 	private String suffix(int n) {
-		if (n > this.seq.length()) throw new RuntimeException("invalid index");
+		if ((n < 1) || (n > this.seq.length())) throw new RuntimeException("invalid index");
 		return this.seq.substring(this.seq.length()-1-n, this.seq.length()-1);
 	}
 	
