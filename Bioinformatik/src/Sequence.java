@@ -5,13 +5,10 @@ public class Sequence {
 
 	private String seq;
 	
-	public Sequence() {
-		this.seq = null;
-	}
-	
 	public Sequence(String s) {
-		if (s == null || s.isEmpty()) throw new RuntimeException("Sequenz ist leer");
+		if (s == null || s.isEmpty()) throw new RuntimeException("empty sequence");
 		this.seq = s;
+		if (!isValid()) throw new RuntimeException("invalid sequence");
 	}
 	
 	public String getSequence() {
