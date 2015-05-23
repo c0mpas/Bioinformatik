@@ -4,48 +4,28 @@ import java.util.ArrayList;
 public class Node {
 
 	private ArrayList<Edge> edges;
-	private Sequence sequence;
+	private Sequence seq;
 	
-	public Node(){
-		this(new Sequence(), new ArrayList<Edge>());
-	}
-	 
-	
-	public Node(ArrayList<Edge> edges){
-		this(new Sequence(), edges);
+	public Node(Sequence s) {
+		this.edges = new ArrayList<Edge>();
+		setSequence(s);
 	}
 	
-	public Node(Sequence sequence){
-		this(sequence, new ArrayList<Edge>() );
-	}
-	
-	public Node(Sequence sequence, ArrayList<Edge> edges){
-		setEdges(edges);
-		setSequence(sequence);
-	}
-	
-
 	public Sequence getSequence() {
-		return sequence;
+		return this.seq;
 	}
 
-	public void setSequence(Sequence sequence) {
-		this.sequence = sequence;
+	public void setSequence(Sequence s) {
+		if (s == null) throw new RuntimeException("sequence is null");
+		this.seq = s;
 	}
-
 
 	public ArrayList<Edge> getEdges() {
-		return edges;
-	}
-
-	
-	public void setEdges(ArrayList<Edge> edges) {
-		this.edges = edges;
+		return this.edges;
 	}
 	
-	public void addEdge(Edge edge){
+	public void addEdge(Edge edge) {
+		if (edge == null) throw new RuntimeException("edge is null");
 		edges.add(edge);
 	}
-	
-	
 }
