@@ -154,7 +154,7 @@ public class GUI {
 			return;
 		}
 		log("loading " + path);
-		ArrayList<String> list = null;
+		ArrayList<Sequence> list = null;
 		try {
 			list = Parser.parse(path);
 		} catch (Exception e) {

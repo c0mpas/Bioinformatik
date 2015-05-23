@@ -89,7 +89,7 @@ public class Sequence {
 	}
 	
 	// merge two sequences
-	public String merge(Sequence left, Sequence right) {
+	public static String merge(Sequence left, Sequence right) {
 		if (left==null || right==null) throw new RuntimeException("sequence is null");
 		int overlap = left.overlap(right);
 		String lseq = left.getSequence();

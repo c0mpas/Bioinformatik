@@ -9,12 +9,12 @@ public class Parser {
 	
 	private static final PrintStream out = System.err;
 	
-	public static final ArrayList<String> parse(String filename) {
+	public static final ArrayList<Sequence> parse(String filename) {
 		if (filename == null) throw new RuntimeException("filename empty");
 		File file = new File(filename);
         if (!file.canRead() || !file.isFile()) throw new RuntimeException("invalid file");
         BufferedReader in = null;
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<Sequence> list = new ArrayList<Sequence>();
         
         try {
             in = new BufferedReader(new FileReader(filename));
@@ -22,7 +22,7 @@ public class Parser {
             while ((zeile = in.readLine()) != null) {
             	zeile = zeile.trim();
             	if (isValid(zeile)) {
-            		list.add(zeile);
+            		list.add(new Sequence(zeile));
             	} else {
             		out.println("invalid line (" + zeile + ")");
             	}

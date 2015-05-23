@@ -5,10 +5,12 @@ public class Node {
 
 	private ArrayList<Edge> edges;
 	private Sequence seq;
+	private Boolean marked;
 	
 	// create new node with sequence
 	public Node(Sequence s) {
 		this.edges = new ArrayList<Edge>();
+		this.marked = false;
 		setSequence(s);
 	}
 	
@@ -32,5 +34,17 @@ public class Node {
 	public void addEdge(Edge edge) {
 		if (edge == null) throw new RuntimeException("edge is null");
 		edges.add(edge);
+	}
+	
+	public void mark() {
+		this.marked = true;
+	}
+	
+	public void unmark() {
+		this.marked = false;
+	}
+	
+	public Boolean isMarked() {
+		return this.marked;
 	}
 }
