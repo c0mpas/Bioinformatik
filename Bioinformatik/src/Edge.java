@@ -19,7 +19,7 @@ public class Edge {
 	}
 	
 	private void computeWeight() {
-		// todo
+		this.weight = this.from.getSequence().overlap(this.to.getSequence());
 	}
 	
 	public Node getFrom() {
