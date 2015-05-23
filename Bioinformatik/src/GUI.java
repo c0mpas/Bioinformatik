@@ -194,10 +194,15 @@ public class GUI {
 		graph = new MultiGraph("graph");
 		graph.addAttribute("ui.stylesheet", graphStyle);
 		
+		String leftseq;
+		String rightseq;
+		
+		for (Node n : g.getNodes()) graph.addNode(n.getSequence().getSequence());
 		for (Node n : g.getNodes()) {
-			graph.addNode(n.getSequence().getSequence());
 			for (Edge e : n.getEdges()) {
-				graph.addEdge(String.valueOf(e.getWeight()), e.getFrom().getSequence().getSequence(), e.getTo().getSequence().getSequence(), true);
+				leftseq = e.getFrom().getSequence().getSequence();
+				rightseq = e.getTo().getSequence().getSequence();
+				graph.addEdge(leftseq+rightseq, leftseq, rightseq, true);
 			}
 		}
 		
