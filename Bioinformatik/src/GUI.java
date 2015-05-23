@@ -36,6 +36,7 @@ public class GUI {
 	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
+	private Graph dnaGraph;
 	
 
 	/**
@@ -104,7 +105,8 @@ public class GUI {
 		btnShowGraph = new JButton("show graph");
 		btnShowGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showDummyGraph();
+				// showDummyGraph();
+				showGraph(dnaGraph);
 			}
 		});
 		frame.getContentPane().add(btnShowGraph, "cell 4 5,alignx right");
@@ -161,7 +163,7 @@ public class GUI {
 			log("error loading file");
 		} else {
 			log("load successful");
-			createGraph(list);
+			this.dnaGraph = createGraph(list);
 		}
 	}
 	
@@ -180,9 +182,8 @@ public class GUI {
 		txtrLog.setText(null);
 	}
 	
-	private void createGraph(ArrayList<Sequence> list) {
-		Graph g = new Graph(list);
-		showGraph(g);
+	private Graph createGraph(ArrayList<Sequence> list) {
+		return new Graph(list);
 	}
 	
 	private void showGraph(Graph g) {
