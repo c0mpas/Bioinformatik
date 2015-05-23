@@ -207,25 +207,4 @@ public class GUI {
         viewer = graph.display();
         viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
 	}
-	
-	private void showDummyGraph() {
-		graph = new MultiGraph("graph");
-		graph.addAttribute("ui.stylesheet", graphStyle);
-		
-		graph.addNode("Alpha");
-        graph.addNode("Beta");
-        graph.addNode("Gamma");
-        graph.addNode("Delta");
-        graph.addEdge("5", "Alpha", "Beta", true);
-        graph.addEdge("1", "Alpha", "Delta", true);
-        graph.addEdge("4", "Beta", "Alpha", true);
-        graph.addEdge("3", "Beta", "Gamma", true);
-        graph.addEdge("2", "Gamma", "Alpha", true);
-        
-        for (org.graphstream.graph.Node n : graph) n.addAttribute("ui.label", n.getId());
-        for (org.graphstream.graph.Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
-        
-        viewer = graph.display();
-        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
-	}
 }

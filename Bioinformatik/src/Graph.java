@@ -30,22 +30,12 @@ public class Graph {
 	// integrate new node in graph by creating edges
 	private void connect(Node n) {
 		if (n==null) throw new RuntimeException("node is null");
-		
-		for(Node existingNode: nodes){
-			Edge edge;
-			int overlap;
-			overlap= n.getSequence().overlap(existingNode.getSequence()); 
-			if(overlap > 0){
-				edge = new Edge(n, existingNode);
-				n.addEdge(edge);
-			}
-			overlap = existingNode.getSequence().overlap(n.getSequence()); 
-			if(overlap > 0){
-				edge = new Edge(existingNode, n);
-				existingNode.addEdge(edge);
+		for (Node existingNode: nodes) {
+			if (!existingNode.equals(n)) {
+				if (n.getSequence().overlap(existingNode.getSequence()) > 0) n.addEdge(new Edge(n, existingNode));
+				if (existingNode.getSequence().overlap(n.getSequence()) > 0) existingNode.addEdge(new Edge(existingNode, n));
 			}
 		}
-		
 	}
 	
 	public void merge(Node a, Node b) {
