@@ -48,11 +48,14 @@ public class Sequence {
 	
 	// Berechnet die maximale Überlappung vom Suffix der Sequenz mit dem Präfix der übergebenen Sequenz s
 	public int overlap(Sequence s) {
+		System.out.println("overlap(" + this.seq + ", " + s.getSequence() + ")");
 		int ownLength = this.seq.length();
 		int foreignLength = s.getSequence().length();
 		int length = (ownLength < foreignLength) ? ownLength : foreignLength;
 		for (int i = length-1; i > 0; i--) {
-			if (this.suffix(i) == s.prefix(i)) return ++i;
+			System.out.println("suffix " + this.suffix(i));
+			System.out.println("prefix " + s.prefix(i));
+			if (this.suffix(i).equals(s.prefix(i))) return ++i;
 		}
 		return 0;
 	}
@@ -60,13 +63,13 @@ public class Sequence {
 	// returns prefix of length n
 	private String prefix(int n) {
 		if ((n < 1) || (n > this.seq.length())) throw new RuntimeException("invalid index");
-		return this.seq.substring(0, n-1);
+		return this.seq.substring(0, n);
 	}
 	
 	// returns suffix of length n
 	private String suffix(int n) {
 		if ((n < 1) || (n > this.seq.length())) throw new RuntimeException("invalid index");
-		return this.seq.substring(this.seq.length()-1-n, this.seq.length()-1);
+		return this.seq.substring(this.seq.length()-n, this.seq.length());
 	}
 	
 	// Testet, ob es sich um eine korrekte DNA-Sequenz handelt
