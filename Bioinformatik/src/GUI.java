@@ -197,17 +197,21 @@ public class GUI {
 		String leftseq;
 		String rightseq;
 		
-		for (Node n : g.getNodes()) graph.addNode(n.getSequence().getSequence());
+		for (Node n : g.getNodes()) {
+			org.graphstream.graph.Node currentNode = graph.addNode(n.getSequence().getSequence());
+			currentNode.addAttribute("ui.label", currentNode.getId());
+		}
 		for (Node n : g.getNodes()) {
 			for (Edge e : n.getEdges()) {
 				leftseq = e.getFrom().getSequence().getSequence();
 				rightseq = e.getTo().getSequence().getSequence();
-				graph.addEdge(leftseq+rightseq, leftseq, rightseq, true);
+				org.graphstream.graph.Edge currentEdge = graph.addEdge(leftseq+rightseq, leftseq, rightseq, true);
+				currentEdge.addAttribute("ui.label", e.getWeight());
 			}
 		}
 		
-        for (org.graphstream.graph.Node n : graph) n.addAttribute("ui.label", n.getId());
-        for (org.graphstream.graph.Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
+        //for (org.graphstream.graph.Node n : graph) n.addAttribute("ui.label", n.getId());
+        //for (org.graphstream.graph.Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
         
         viewer = graph.display();
         viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);

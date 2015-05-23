@@ -48,14 +48,11 @@ public class Sequence {
 	
 	// Berechnet die maximale Überlappung vom Suffix der Sequenz mit dem Präfix der übergebenen Sequenz s
 	public int overlap(Sequence s) {
-		System.out.println("overlap(" + this.seq + ", " + s.getSequence() + ")");
 		int ownLength = this.seq.length();
 		int foreignLength = s.getSequence().length();
 		int length = (ownLength < foreignLength) ? ownLength : foreignLength;
 		for (int i = length-1; i > 0; i--) {
-			System.out.println("suffix " + this.suffix(i));
-			System.out.println("prefix " + s.prefix(i));
-			if (this.suffix(i).equals(s.prefix(i))) return ++i;
+			if (this.suffix(i).equals(s.prefix(i))) return i;
 		}
 		return 0;
 	}
