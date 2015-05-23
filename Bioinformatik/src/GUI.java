@@ -15,9 +15,6 @@ import javax.swing.JTextPane;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
@@ -36,7 +33,7 @@ public class GUI {
 	private JButton btnClearLog;
 	private JButton btnShowGraph;
 	
-	private Graph graph;
+	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	
@@ -107,7 +104,7 @@ public class GUI {
 		btnShowGraph = new JButton("show graph");
 		btnShowGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				showGraph();
+				showDummyGraph();
 			}
 		});
 		frame.getContentPane().add(btnShowGraph, "cell 4 5,alignx right");
@@ -183,7 +180,25 @@ public class GUI {
 		txtrLog.setText(null);
 	}
 	
-	private void showGraph() {
+	private void showGraph(Graph g) {
+		graph = new MultiGraph("graph");
+		graph.addAttribute("ui.stylesheet", graphStyle);
+		
+		for (Node n : g.getNodes()) {
+			graph.addNode(n.getSequence().getSequence());
+			for (Edge e : n.getEdges()) {
+				graph.addEdge(String.valueOf(e.getWeight()), e.getFrom().getSequence().getSequence(), e.getTo().getSequence().getSequence(), true);
+			}
+		}
+		
+        for (org.graphstream.graph.Node n : graph) n.addAttribute("ui.label", n.getId());
+        for (org.graphstream.graph.Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
+        
+        viewer = graph.display();
+        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
+	}
+	
+	private void showDummyGraph() {
 		graph = new MultiGraph("graph");
 		graph.addAttribute("ui.stylesheet", graphStyle);
 		
@@ -197,8 +212,8 @@ public class GUI {
         graph.addEdge("3", "Beta", "Gamma", true);
         graph.addEdge("2", "Gamma", "Alpha", true);
         
-        for (Node n : graph) n.addAttribute("ui.label", n.getId());
-        for (Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
+        for (org.graphstream.graph.Node n : graph) n.addAttribute("ui.label", n.getId());
+        for (org.graphstream.graph.Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
         
         viewer = graph.display();
         viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);

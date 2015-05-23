@@ -9,6 +9,10 @@ public class Graph {
 		this.nodes = new ArrayList<Node>();
 	}
 	
+	public ArrayList<Node> getNodes() {
+		return this.nodes;
+	}
+	
 	// add new node to graph
 	public void addNode(Node n) {
 		if (n==null) throw new RuntimeException("node is null");
