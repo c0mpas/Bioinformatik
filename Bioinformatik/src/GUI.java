@@ -8,12 +8,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 
 public class GUI {
 
@@ -27,12 +34,18 @@ public class GUI {
 	private JButton btnLoad;
 	private JFileChooser chooser;
 	private JButton btnClearLog;
+	private JButton btnShowGraph;
+	
+	private Graph graph;
+	private Viewer viewer;
+	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -63,7 +76,7 @@ public class GUI {
 		icon = new ImageIcon(getClass().getResource("/graphics/dna.png"));
 		frame.setIconImage(icon.getImage());
 		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][grow 50][50px:n]", "[50px:n][grow][50px:n][grow][][][10px:n][30px:n][30px:n]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][grow][50px:n]", "[50px:n][grow][50px:n][grow][][][10px:n][30px:n][30px:n]"));
 		
 		// scroll layout
 		scrollPane = new JScrollPane();
@@ -89,8 +102,17 @@ public class GUI {
 			}
 		});
 		frame.getContentPane().add(btnClearLog, "cell 2 5");
+		
+		// button to show graph
+		btnShowGraph = new JButton("show graph");
+		btnShowGraph.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showGraph();
+			}
+		});
+		frame.getContentPane().add(btnShowGraph, "cell 4 5,alignx right");
 
-		// filepath text field
+		// file path text field
 		txtFilepath = new JTextField();
 		txtFilepath.setText("input file");
 		txtFilepath.setColumns(1);
@@ -159,5 +181,26 @@ public class GUI {
 	private void clearLog() {
 		if (txtrLog == null) return;
 		txtrLog.setText(null);
+	}
+	
+	private void showGraph() {
+		graph = new MultiGraph("graph");
+		graph.addAttribute("ui.stylesheet", graphStyle);
+		
+		graph.addNode("Alpha");
+        graph.addNode("Beta");
+        graph.addNode("Gamma");
+        graph.addNode("Delta");
+        graph.addEdge("5", "Alpha", "Beta", true);
+        graph.addEdge("1", "Alpha", "Delta", true);
+        graph.addEdge("4", "Beta", "Alpha", true);
+        graph.addEdge("3", "Beta", "Gamma", true);
+        graph.addEdge("2", "Gamma", "Alpha", true);
+        
+        for (Node n : graph) n.addAttribute("ui.label", n.getId());
+        for (Edge e : graph.getEdgeSet()) e.addAttribute("ui.label", e.getId());
+        
+        viewer = graph.display();
+        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
 	}
 }
