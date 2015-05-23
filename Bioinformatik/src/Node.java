@@ -47,4 +47,9 @@ public class Node {
 	public Boolean isMarked() {
 		return this.marked;
 	}
+	
+	public boolean equals(Node node){
+		return this.getSequence().equals(node.getSequence());
+	}
+	
 }
