@@ -1,4 +1,36 @@
 
 public class Edge {
+	
+	private Node from;
+	private Node to;
+	private int weight;
+	
+	public Edge() {
+		this.from = null;
+		this.to = null;
+		this.weight = 0;
+	}
+	
+	public Edge(Node from, Node to) {
+		if (from == null || to == null) throw new RuntimeException("node is null");
+		this.from = from;
+		this.to = to;
+		computeWeight();
+	}
+	
+	private void computeWeight() {
+		// todo
+	}
+	
+	public Node getFrom() {
+		return this.from;
+	}
 
+	public Node getTo() {
+		return this.to;
+	}
+	
+	public int getWeight() {
+		return this.weight;
+	}
 }
