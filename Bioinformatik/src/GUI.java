@@ -34,6 +34,7 @@ public class GUI {
 	private JButton btnShowGraph;
 	private JButton btnSortEdges;
 	private JLabel labelLog;
+	private JButton btnMergeStep;
 	
 	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
@@ -71,12 +72,12 @@ public class GUI {
 	private void initialize() {
 		// main frame
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 600);
+		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		icon = new ImageIcon(getClass().getResource("/graphics/dna.png"));
 		frame.setIconImage(icon.getImage());
 		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[50px:n,grow][50px:n,grow][50px:n][grow][50px:n]", "[20px:n][grow][50px:n][grow][][][10px:n][30px:n][30px:n]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][30px:n][30px:n][10px:n][30px:n][30px:n]"));
 		
 		// text pane
 		labelLog = new JLabel();
@@ -109,6 +110,7 @@ public class GUI {
 				clearLog();
 			}
 		});
+		frame.getContentPane().add(btnClearLog, "cell 2 5,growx,aligny center");
 		
 		btnSortEdges = new JButton("sort edges");
 		btnSortEdges.addActionListener(new ActionListener() {
@@ -116,48 +118,71 @@ public class GUI {
 				if (dnaGraph == null) {
 					log("missing graph");
 				} else {
-					log(dnaGraph.getEdges().toString());
+					for (Edge e : dnaGraph.getEdges()) log(e.toString());
 				}
 			}
 		});
-		frame.getContentPane().add(btnSortEdges, "cell 4 4,alignx right");
-		frame.getContentPane().add(btnClearLog, "cell 2 5");
+		frame.getContentPane().add(btnSortEdges, "cell 4 4,growx,aligny center");
+		
+		btnMergeStep = new JButton("merge step");
+		btnMergeStep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// merge nodes from first (heaviest) edge
+				if (dnaGraph==null) {
+					log("no graph available");
+					return;
+				}
+				ArrayList<Edge> sortedEdges = dnaGraph.getEdges();
+				if (sortedEdges.isEmpty()) {
+					log("no edges in graph");
+				} else {
+					Edge e = sortedEdges.get(0);
+					log("merge nodes " + dnaGraph.getIndex(e.getTo()) + " and " + dnaGraph.getIndex(e.getFrom()) + ": " + e.toString());
+					dnaGraph.merge(e);
+					refreshInfoBox();
+				}
+			}
+		});
+		frame.getContentPane().add(btnMergeStep, "cell 3 4,growx,aligny center");
 		
 		// button to show graph
 		btnShowGraph = new JButton("show graph");
 		btnShowGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					showGraph(dnaGraph);
+					refreshGraph();
+					viewer = graph.display();
+			        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
 				} catch (Exception e) {
 					log(e.toString());
 				}
 			}
 		});
-		frame.getContentPane().add(btnShowGraph, "cell 4 5,alignx right");
-
-		// file path text field
-		txtFilepath = new JTextField();
-		txtFilepath.setText("input file");
-		txtFilepath.setColumns(1);
-		frame.getContentPane().add(txtFilepath, "cell 2 7 3 1,growx");
-		
+		frame.getContentPane().add(btnShowGraph, "cell 4 5,growx,aligny center");
+				
 		// button to choose file
 		btnChoose = new JButton("select file");
 		btnChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 		}});
-		frame.getContentPane().add(btnChoose, "cell 2 8,alignx left,aligny center");
+		frame.getContentPane().add(btnChoose, "cell 2 7,growx,aligny center");
 		
 		// load button
 		btnLoad = new JButton("load file");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadFile();
+				refreshInfoBox();
 			}
 		});
-		frame.getContentPane().add(btnLoad, "cell 4 8,alignx right,aligny center");
+		frame.getContentPane().add(btnLoad, "cell 4 7,growx,aligny center");
+
+		// file path text field
+		txtFilepath = new JTextField();
+		txtFilepath.setText("C:\\Users\\Sebastian\\frag.dat");
+		txtFilepath.setColumns(1);
+		frame.getContentPane().add(txtFilepath, "cell 2 8 3 1,growx");
 	}
 	
 	private void chooseFile() {
@@ -189,6 +214,7 @@ public class GUI {
 		} else {
 			log("load successful");
 			this.dnaGraph = createGraph(list);
+			refreshGraph();
 		}
 	}
 	
@@ -208,19 +234,19 @@ public class GUI {
 		return new Graph(list);
 	}
 	
-	private void showGraph(Graph g) {
-		if (g == null) throw new RuntimeException("graph is null");
+	// refresh gui graph 
+	private void refreshGraph() {
 		graph = new MultiGraph("graph");
 		graph.addAttribute("ui.stylesheet", graphStyle);
 		
 		String leftseq;
 		String rightseq;
 		
-		for (Node n : g.getNodes()) {
+		for (Node n : dnaGraph.getNodes()) {
 			org.graphstream.graph.Node currentNode = graph.addNode(n.getSequence().getSequence());
 			currentNode.addAttribute("ui.label", currentNode.getId());
 		}
-		for (Node n : g.getNodes()) {
+		for (Node n : dnaGraph.getNodes()) {
 			for (Edge e : n.getEdges()) {
 				leftseq = e.getFrom().getSequence().getSequence();
 				rightseq = e.getTo().getSequence().getSequence();
@@ -228,8 +254,15 @@ public class GUI {
 				currentEdge.addAttribute("ui.label", e.getWeight());
 			}
 		}
-		
-        viewer = graph.display();
-        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
+	}
+	
+	// refresh info box and show current info about graph
+	private void refreshInfoBox() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><body>infobox<br><br>");
+		sb.append("nodes: ").append(dnaGraph.getNodes().size());
+		sb.append("<br>edges: ").append(dnaGraph.getEdges().size());
+		sb.append("</body></html>");
+		labelInfobox.setText(sb.toString());
 	}
 }

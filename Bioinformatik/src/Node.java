@@ -35,6 +35,12 @@ public class Node {
 		if (edge == null) throw new RuntimeException("edge is null");
 		edges.add(edge);
 	}
+
+	// remove outgoing edge
+	public void removeEdge(Edge edge) {
+		if (edge == null) throw new RuntimeException("edge is null");
+		edges.remove(edges.indexOf(edge));
+	}
 	
 	public void mark() {
 		this.marked = true;
@@ -50,5 +56,9 @@ public class Node {
 	
 	public boolean equals(Node node){
 		return this.getSequence().equals(node.getSequence());
+	}
+	
+	public String toString() {
+		return this.seq.toString();
 	}
 }

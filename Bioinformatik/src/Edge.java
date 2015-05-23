@@ -36,10 +36,10 @@ public class Edge {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("[").append(this.from.getSequence().getSequence());
+		sb.append("[").append(this.from.toString());
 		sb.append("---").append(this.weight);
-		sb.append("--->").append(this.to.getSequence().getSequence());
-		sb.append("]\n");
+		sb.append("--->").append(this.to.toString());
+		sb.append("]");
 		return sb.toString();
 	}
 }

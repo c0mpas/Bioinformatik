@@ -81,12 +81,19 @@ public class Sequence {
 	}
 	
 	// merge two sequences
-	public static String merge(Sequence left, Sequence right) {
+	public static Sequence merge(Sequence left, Sequence right) {
 		if (left==null || right==null) throw new RuntimeException("sequence is null");
-		int overlap = left.overlap(right);
 		String lseq = left.getSequence();
 		String rseq = right.getSequence();
-		return lseq + rseq.substring(overlap-1, rseq.length()-1);
+		return new Sequence(lseq + rseq.substring(left.overlap(right)-1, rseq.length()-1));
+	}
+
+	public boolean equals(Sequence s){
+		return this.seq.equals(s.getSequence());
+	}
+	
+	public String toString() {
+		return this.seq;
 	}
 	
 }

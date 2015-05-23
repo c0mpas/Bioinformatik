@@ -40,11 +40,14 @@ public class Graph {
 		}
 	}
 	
-	public void merge(Node a, Node b) {
-		if (a==null || b==null) throw new RuntimeException("node is null");
-		// merge node a and b to new node n
-		// connect(n);
-		// todo
+	public void merge(Edge e) {
+		if (e==null) throw new RuntimeException("edge is null");
+		Sequence s = Sequence.merge(e.getFrom().getSequence(), e.getTo().getSequence());
+		// remove nodes
+		this.removeNode(e.getTo());
+		this.removeNode(e.getFrom());
+		// add merged node
+		this.addNode(new Node(s));
 	}
 	
 	// return a sorted list of all edges
@@ -62,7 +65,36 @@ public class Graph {
 		            else return 0;
 		        }
 		    });
-		System.out.println(list);
 		return list;
+	}
+	
+	// remove a node (and his edges) from the graph
+	public void removeNode(Node node) {
+		if (node==null) throw new RuntimeException("node is null");
+		ArrayList<Edge> currentEdges = null;
+		// remove all incoming edges
+		for (Node n : this.nodes) {
+			currentEdges = new ArrayList<Edge>();
+			for (Edge e : n.getEdges()) {
+				if (e.getTo().equals(node)) currentEdges.add(e);
+			}
+			for (Edge e : currentEdges) {
+				n.removeEdge(e);
+			}
+		}
+		// remove node and his edges
+		nodes.remove(nodes.indexOf(node));
+	}
+	
+	public int getIndex(Node n) {
+		return nodes.indexOf(n);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("graph: [");
+		for (Edge e : getEdges()) sb.append(e.toString());
+		sb.append("]");
+		return sb.toString();
 	}
 }
