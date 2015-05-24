@@ -22,7 +22,8 @@ import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 public class GUI {
 
 	private JFrame frame;
-	private ImageIcon icon;
+	private ImageIcon icon_logo;
+	private ImageIcon icon_background;
 	private JScrollPane scrollPane;
 	private JTextArea txtrLog;
 	private JLabel labelInfobox;
@@ -42,6 +43,7 @@ public class GUI {
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	private Graph dnaGraph;
 	private Assembler assembler;
+	private JLabel lblImageArea;
 	
 
 	/**
@@ -76,8 +78,8 @@ public class GUI {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		icon = new ImageIcon(getClass().getResource("/graphics/dna.png"));
-		frame.setIconImage(icon.getImage());
+		icon_logo = new ImageIcon(getClass().getResource("/graphics/dna_icon.png"));
+		frame.setIconImage(icon_logo.getImage());
 		frame.setTitle("DNA Assembler");
 		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][30px:n][30px:n][10px:n][30px:n][30px:n]"));
 		
@@ -104,6 +106,13 @@ public class GUI {
 		labelInfobox.setVerticalAlignment(JLabel.TOP);
 		labelInfobox.setText("infobox");
 		frame.getContentPane().add(labelInfobox, "cell 2 0 3 3,grow");
+		
+		// image area
+		lblImageArea = new JLabel();
+		icon_background = new ImageIcon(getClass().getResource("/graphics/dna_background.png"));
+		lblImageArea.setIcon(icon_background);
+		//lblImageArea.setIconTextGap(-300);
+		frame.getContentPane().add(lblImageArea, "cell 2 3 3 1,alignx center,aligny center");
 		
 		// run assembler button
 		btnRunAssembler = new JButton("run assembler");
