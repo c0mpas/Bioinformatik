@@ -6,7 +6,7 @@ public class Sequence {
 	private String seq;
 	
 	public Sequence(String s) {
-		if (s == null || s.isEmpty()) throw new RuntimeException("empty sequence");
+		if (s == null || s.isEmpty()) throw new IllegalArgumentException("empty sequence");
 		this.seq = s;
 		if (!isValid()) throw new RuntimeException("invalid sequence");
 	}
@@ -37,7 +37,7 @@ public class Sequence {
 	
 	// Testet, ob die Sequenz ab der Stelle i gleich einer weiteren angegebenen Sequenz s ist
 	public boolean compare(Sequence s,int i) {
-		if (i < 0) throw new RuntimeException("index must be >= 0");
+		if (i < 0) throw new IllegalArgumentException("index must be >= 0");
 		if (i > seq.length()-1) return false;
 		if (seq.substring(i, seq.length()-1) == s.getSequence()) return true;
 		return false;
@@ -56,13 +56,13 @@ public class Sequence {
 	
 	// returns prefix of length n
 	private String prefix(int n) {
-		if ((n < 1) || (n > this.seq.length())) throw new RuntimeException("invalid index");
+		if ((n < 1) || (n > this.seq.length())) throw new IllegalArgumentException("invalid index");
 		return this.seq.substring(0, n);
 	}
 	
 	// returns suffix of length n
 	private String suffix(int n) {
-		if ((n < 1) || (n > this.seq.length())) throw new RuntimeException("invalid index");
+		if ((n < 1) || (n > this.seq.length())) throw new IllegalArgumentException("invalid index");
 		return this.seq.substring(this.seq.length()-n, this.seq.length());
 	}
 	
@@ -82,7 +82,7 @@ public class Sequence {
 	
 	// merge two sequences
 	public static Sequence merge(Sequence left, Sequence right) {
-		if (left==null || right==null) throw new RuntimeException("sequence is null");
+		if (left==null || right==null) throw new IllegalArgumentException("sequence is null");
 		String lseq = left.getSequence();
 		String rseq = right.getSequence();
 		return new Sequence(lseq + rseq.substring(left.overlap(right)-1, rseq.length()-1));

@@ -10,7 +10,7 @@ public class Parser {
 	private static final PrintStream out = System.err;
 	
 	public static final ArrayList<Sequence> parse(String filename) {
-		if (filename == null) throw new RuntimeException("filename empty");
+		if (filename == null) throw new IllegalArgumentException("filename empty");
 		File file = new File(filename);
         if (!file.canRead() || !file.isFile()) throw new RuntimeException("invalid file");
         BufferedReader in = null;

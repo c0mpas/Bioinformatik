@@ -35,11 +35,13 @@ public class GUI {
 	private JButton btnSortEdges;
 	private JLabel labelLog;
 	private JButton btnMergeStep;
+	private JButton btnRunAssembler;
 	
 	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	private Graph dnaGraph;
+	private Assembler assembler;
 	
 
 	/**
@@ -102,6 +104,30 @@ public class GUI {
 		labelInfobox.setVerticalAlignment(JLabel.TOP);
 		labelInfobox.setText("infobox");
 		frame.getContentPane().add(labelInfobox, "cell 2 0 3 3,grow");
+		
+		// run assembler button
+		btnRunAssembler = new JButton("run assembler");
+		btnRunAssembler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (dnaGraph==null) {
+					log("no graph available");
+				} else {
+					assembler = new Assembler(dnaGraph);
+					ArrayList<Sequence> list = assembler.run();
+					refreshInfoBox();
+					if (list.size() > 1) {
+						log("DNA Sequence could not be assembled completely\nResults:");
+						for (Sequence s : list) log(s.toString());
+					} else if (list.size() == 1) {
+						log("DNA Sequence assembled\nResult:");
+						log(list.get(0).toString());
+					} else {
+						log("Assembler did not provide any result. Something went wrong.");
+					}
+				}
+			}
+		});
+		frame.getContentPane().add(btnRunAssembler, "cell 2 4,growx,aligny center");
 		
 		// clear log button
 		btnClearLog = new JButton("clear log");

@@ -12,7 +12,7 @@ public class Edge {
 	}
 	
 	public Edge(Node from, Node to) {
-		if (from == null || to == null) throw new RuntimeException("node is null");
+		if (from == null || to == null) throw new IllegalArgumentException("node is null");
 		this.from = from;
 		this.to = to;
 		computeWeight();

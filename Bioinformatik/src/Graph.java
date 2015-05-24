@@ -24,14 +24,14 @@ public class Graph {
 	
 	// add new node to graph
 	public void addNode(Node n) {
-		if (n==null) throw new RuntimeException("node is null");
+		if (n==null) throw new IllegalArgumentException("node is null");
 		this.nodes.add(n);
 		connect(n);
 	}
 	
 	// integrate new node in graph by creating edges
 	private void connect(Node n) {
-		if (n==null) throw new RuntimeException("node is null");
+		if (n==null) throw new IllegalArgumentException("node is null");
 		for (Node existingNode: nodes) {
 			if (!existingNode.equals(n)) {
 				if (n.getSequence().overlap(existingNode.getSequence()) > 0) n.addEdge(new Edge(n, existingNode));
@@ -41,7 +41,7 @@ public class Graph {
 	}
 	
 	public void merge(Edge e) {
-		if (e==null) throw new RuntimeException("edge is null");
+		if (e==null) throw new IllegalArgumentException("edge is null");
 		Sequence s = Sequence.merge(e.getFrom().getSequence(), e.getTo().getSequence());
 		// remove nodes
 		this.removeNode(e.getTo());
@@ -70,7 +70,7 @@ public class Graph {
 	
 	// remove a node (and his edges) from the graph
 	public void removeNode(Node node) {
-		if (node==null) throw new RuntimeException("node is null");
+		if (node==null) throw new IllegalArgumentException("node is null");
 		ArrayList<Edge> currentEdges = null;
 		// remove all incoming edges
 		for (Node n : this.nodes) {

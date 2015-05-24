@@ -21,7 +21,7 @@ public class Node {
 
 	// set sequence
 	public void setSequence(Sequence s) {
-		if (s == null) throw new RuntimeException("sequence is null");
+		if (s == null) throw new IllegalArgumentException("sequence is null");
 		this.seq = s;
 	}
 
@@ -32,13 +32,13 @@ public class Node {
 	
 	// add outgoing edge
 	public void addEdge(Edge edge) {
-		if (edge == null) throw new RuntimeException("edge is null");
+		if (edge == null) throw new IllegalArgumentException("edge is null");
 		edges.add(edge);
 	}
 
 	// remove outgoing edge
 	public void removeEdge(Edge edge) {
-		if (edge == null) throw new RuntimeException("edge is null");
+		if (edge == null) throw new IllegalArgumentException("edge is null");
 		edges.remove(edges.indexOf(edge));
 	}
 	
