@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -23,7 +24,6 @@ public class GUI {
 
 	private JFrame frame;
 	private ImageIcon icon_logo;
-	private ImageIcon icon_background;
 	private JScrollPane scrollPane;
 	private JTextArea txtrLog;
 	private JLabel labelInfobox;
@@ -37,13 +37,13 @@ public class GUI {
 	private JLabel labelLog;
 	private JButton btnMergeStep;
 	private JButton btnRunAssembler;
+	private JLabel lblImageArea;
 	
 	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	private Graph dnaGraph;
 	private Assembler assembler;
-	private JLabel lblImageArea;
 	
 
 	/**
@@ -108,14 +108,15 @@ public class GUI {
 		frame.getContentPane().add(labelInfobox, "cell 2 0 3 3,grow");
 		
 		// image area
-		lblImageArea = new JLabel();
-		icon_background = new ImageIcon(getClass().getResource("/graphics/dna_background.png"));
-		lblImageArea.setIcon(icon_background);
+		lblImageArea = new JLabel(new ImageIcon(getClass().getResource("/graphics/dna_background.png")));
 		//lblImageArea.setIconTextGap(-300);
 		frame.getContentPane().add(lblImageArea, "cell 2 3 3 1,alignx center,aligny center");
 		
 		// run assembler button
 		btnRunAssembler = new JButton("run assembler");
+		btnRunAssembler.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_assemble.png")));
+		btnRunAssembler.setHorizontalAlignment(SwingConstants.LEFT);
+		btnRunAssembler.setIconTextGap(10);
 		btnRunAssembler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (dnaGraph==null) {
@@ -140,6 +141,9 @@ public class GUI {
 		
 		// clear log button
 		btnClearLog = new JButton("clear log");
+		btnClearLog.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_clear.png")));
+		btnClearLog.setHorizontalAlignment(SwingConstants.LEFT);
+		btnClearLog.setIconTextGap(20);
 		btnClearLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearLog();
@@ -147,7 +151,11 @@ public class GUI {
 		});
 		frame.getContentPane().add(btnClearLog, "cell 2 5,growx,aligny center");
 		
+		// sort button
 		btnSortEdges = new JButton("sort edges");
+		btnSortEdges.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_sort.png")));
+		btnSortEdges.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSortEdges.setIconTextGap(10);
 		btnSortEdges.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (dnaGraph == null) {
@@ -159,7 +167,11 @@ public class GUI {
 		});
 		frame.getContentPane().add(btnSortEdges, "cell 4 4,growx,aligny center");
 		
+		// merge button
 		btnMergeStep = new JButton("merge step");
+		btnMergeStep.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_merge.png")));
+		btnMergeStep.setHorizontalAlignment(SwingConstants.LEFT);
+		btnMergeStep.setIconTextGap(10);
 		btnMergeStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// merge nodes from first (heaviest) edge
@@ -182,6 +194,9 @@ public class GUI {
 		
 		// button to show graph
 		btnShowGraph = new JButton("show graph");
+		btnShowGraph.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_graph.png")));
+		btnShowGraph.setHorizontalAlignment(SwingConstants.LEFT);
+		btnShowGraph.setIconTextGap(10);
 		btnShowGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -197,6 +212,9 @@ public class GUI {
 				
 		// button to choose file
 		btnChoose = new JButton("select file");
+		btnChoose.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_open.png")));
+		btnChoose.setHorizontalAlignment(SwingConstants.LEFT);
+		btnChoose.setIconTextGap(20);
 		btnChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
@@ -205,6 +223,9 @@ public class GUI {
 		
 		// load button
 		btnLoad = new JButton("load file");
+		btnLoad.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_load.png")));
+		btnLoad.setHorizontalAlignment(SwingConstants.LEFT);
+		btnLoad.setIconTextGap(20);
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadFile();
