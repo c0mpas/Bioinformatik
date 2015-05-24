@@ -88,7 +88,7 @@ public class Sequence {
 		return new Sequence(lseq + rseq.substring(left.overlap(right)-1, rseq.length()-1));
 	}
 
-	public boolean equals(Sequence s){
+	public boolean equals(Sequence s) {
 		return this.seq.equals(s.getSequence());
 	}
 	

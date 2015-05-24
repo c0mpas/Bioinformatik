@@ -147,6 +147,16 @@ public class GUI {
 		btnClearLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearLog();
+				if (dnaGraph!=null) {
+					ArrayList<Edge> path = dnaGraph.hamiltonPath();
+					if (path==null) {
+						log("hamiltonPath() returned null");
+					} else {
+						log(path.toString());
+					}
+				}
+				//ArrayList<Permutation> list = Permutations.permutations(5);
+				//for (Permutation p : list) log(p.toString());
 			}
 		});
 		frame.getContentPane().add(btnClearLog, "cell 2 5,growx,aligny center");
@@ -321,4 +331,5 @@ public class GUI {
 		sb.append("</body></html>");
 		labelInfobox.setText(sb.toString());
 	}
+	
 }
