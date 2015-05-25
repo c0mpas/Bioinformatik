@@ -347,7 +347,7 @@ public class GUI {
 	
 	private String printMatrix(int[][] matrix) {
 		int size = matrix.length;
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("adjacency matrix:\n");
 		for (int i = 0; i < size; i++) {
 			StringBuilder row = new StringBuilder();
 			for (int j = 0; j < size; j++) {
@@ -372,7 +372,7 @@ public class GUI {
 			if (path==null) {
 				log("\n\nhamiltonPath() returned null");
 			} else {
-				log("\nhamilton path with biggest weight for current graph:\n" + dnaGraph.printPath(path) + "\nweight: " + Graph.getWeight(path));
+				log("\nhamilton path with biggest weight (" + Graph.getWeight(path) + ") for current graph:\n" + dnaGraph.printPath(path));
 			}
 			
 			// show new algorithm
@@ -385,7 +385,7 @@ public class GUI {
 				for (int i = 0; i < intpath.length; i++) {
 					out += String.valueOf(intpath[i]);
 				}
-				log(out);
+				log("path: " + out);
 			} catch (Exception e) {
 				log(e.toString());
 			}
