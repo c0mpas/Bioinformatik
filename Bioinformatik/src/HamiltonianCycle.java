@@ -34,19 +34,16 @@ public class HamiltonianCycle
         }
     }
     
-    public int[] getPath() {
-    	return this.path;
-    }
-    
     /** function to find paths recursively **/
     public void solve(int vertex) throws Exception
     {
+    	display();
         /** solution **/
         if (graph[vertex][0] == 1 && pathCount == V)
             throw new Exception("Solution found");
-        /** all vertices selected but last vertex not linked to 0 **/
-        if (pathCount == V)
-            return;
+//        /** all vertices selected but last vertex not linked to 0 **/
+//        if (pathCount == V)
+//            return;
  
         for (int v = 0; v < V; v++)
         {
@@ -82,39 +79,14 @@ public class HamiltonianCycle
     }
     
     /** display solution **/
-    public void display()
-    {
+    public void display() {
         System.out.print("\nPath : ");
-        for (int i = 0; i <= V; i++)
-            System.out.print(path[i % V] +" ");
-        System.out.println();
+        for (int i = 0; i < V; i++) System.out.print(path[i] +" ");
     }    
-//    
-//    /** Main function **/
-//    public static void main (String[] args) 
-//    {
-//        Scanner scan = new Scanner(System.in);
-//        System.out.println("HamiltonianCycle Algorithm Test\n");
-//        /** Make an object of HamiltonianCycle class **/
-//        HamiltonianCycle hc = new HamiltonianCycle();
-// 
-//        /** Accept number of vertices **/
-//        System.out.println("Enter number of vertices\n");
-//        int V = scan.nextInt();
-// 
-//        /** get graph **/
-//        System.out.println("\nEnter matrix\n");
-//        int[][] graph = new int[V][V];
-//        for (int i = 0; i < V; i++)
-//            for (int j = 0; j < V; j++)
-//                graph[i][j] = scan.nextInt();
-// 
-//        hc.findHamiltonianCycle(graph);        
-//    }   
 
-    public static final int[] get(int[][] matrix) {
-        HamiltonianCycle hc = new HamiltonianCycle();
-        hc.findHamiltonianCycle(matrix);
-        return hc.getPath();
+    // return hamilton path
+    public int[] get(int[][] matrix) {
+        findHamiltonianCycle(matrix);
+        return this.path;
     }   
 }

@@ -367,8 +367,9 @@ public class GUI {
 		if (dnaGraph!=null) {
 			int[][] matrix = dnaGraph.getAdjacencyMatrix();
 			log(printMatrix(matrix));
+			HamiltonianCycle hc = new HamiltonianCycle();
 			try {
-				int[] path = HamiltonianCycle.get(matrix);
+				int[] path = hc.get(matrix);
 				for (int i = 0; i < path.length; i++) {
 					log(String.valueOf(path[i]));
 				}
