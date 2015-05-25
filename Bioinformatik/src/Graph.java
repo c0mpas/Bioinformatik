@@ -49,7 +49,7 @@ public class Graph {
 			for (Integer i : perm.getVector()) p.add(i);
 			
 			// current permutation p is ready to use
-			System.out.println("checking path");
+			System.out.println("...checking path...");
 			
 			// create path for permutation
 			nodepath = new ArrayList<Node>();
@@ -57,15 +57,14 @@ public class Graph {
 			exists = true;
 			for (Integer i : p.get()) nodepath.add(this.nodes.get(i));
 			// check if path exists
-			for (int i = 0; i < nodepath.size(); i++) {
+			for (int i = 0; i < nodepath.size()-1; i++) {
 				if (exists) {
 					found = false;
 					// check node
 					for (Edge e : nodepath.get(i).getEdges()) {
-						System.out.println("checking node " + i);
-						if (i < (nodepath.size()-1)) {
+						if (!found && i<(nodepath.size()-1)) {
 							// find edge to next node
-							if (!found && e.getTo().getSequence().equals(nodepath.get(i+1).getSequence())) {
+							if (e.getTo().getSequence().equals(nodepath.get(i+1).getSequence())) {
 								found = true;
 								edgepath.add(e);
 							}
@@ -78,7 +77,7 @@ public class Graph {
 			if (exists) {
 				int weight = getWeight(edgepath);
 				if (weight>hamiltonWeight) {
-					System.out.println("path found");
+					System.out.println("path found: " + edgepath.toString());
 					// override current hamilton
 					currentHamilton = edgepath;
 					hamiltonWeight = weight;

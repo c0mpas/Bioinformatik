@@ -38,13 +38,13 @@ public class GUI {
 	private JButton btnMergeStep;
 	private JButton btnRunAssembler;
 	private JLabel lblImageArea;
+	private JButton btnTest;
 	
 	private org.graphstream.graph.Graph graph;
 	private Viewer viewer;
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	private Graph dnaGraph;
 	private Assembler assembler;
-	
 
 	/**
 	 * Launch the application.
@@ -147,16 +147,6 @@ public class GUI {
 		btnClearLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearLog();
-				if (dnaGraph!=null) {
-					ArrayList<Edge> path = dnaGraph.hamiltonPath();
-					if (path==null) {
-						log("hamiltonPath() returned null");
-					} else {
-						log(path.toString());
-					}
-				}
-				//ArrayList<Permutation> list = Permutations.permutations(5);
-				//for (Permutation p : list) log(p.toString());
 			}
 		});
 		frame.getContentPane().add(btnClearLog, "cell 2 5,growx,aligny center");
@@ -246,9 +236,21 @@ public class GUI {
 
 		// file path text field
 		txtFilepath = new JTextField();
-		txtFilepath.setText("C:\\Users\\Sebastian\\frag.dat");
+		txtFilepath.setText("");
 		txtFilepath.setColumns(1);
 		frame.getContentPane().add(txtFilepath, "cell 2 8 3 1,growx");
+		
+		// test button
+		btnTest = new JButton("test");
+		btnTest.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_question.png")));
+		btnTest.setHorizontalAlignment(SwingConstants.LEFT);
+		btnTest.setIconTextGap(20);
+		btnTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				run_test();
+			}
+		});
+		frame.getContentPane().add(btnTest, "cell 3 5,growx,aligny center");
 	}
 	
 	private void chooseFile() {
@@ -330,6 +332,21 @@ public class GUI {
 		sb.append("<br>edges: ").append(dnaGraph.getEdges().size());
 		sb.append("</body></html>");
 		labelInfobox.setText(sb.toString());
+	}
+	
+	// run custom test
+	private void run_test() {
+		if (txtFilepath!=null) txtFilepath.setText("C:\\Users\\Sebastian\\frag.dat");
+		loadFile();
+		refreshInfoBox();
+		if (dnaGraph!=null) {
+			ArrayList<Edge> path = dnaGraph.hamiltonPath();
+			if (path==null) {
+				log("hamiltonPath() returned null");
+			} else {
+				log("hamilton path for current graph:\n" + path.toString());
+			}
+		}
 	}
 	
 }
