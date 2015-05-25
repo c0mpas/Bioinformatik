@@ -24,15 +24,7 @@ public class GUI {
 
 	private static JTextArea txtrLog;
 	
-	private static final String homepath = "C:\\Users\\cgeidt\\Desktop\\frag.dat";
-	private static final int[][] m = {	{0, 1, 0, 1, 1, 0, 0, 0},
-										{1, 0, 1, 0, 0, 1, 0, 0},
-										{0, 1, 0, 1, 0, 0, 1, 0},
-										{1, 0, 1, 0, 0, 0, 0, 1},
-										{1, 0, 0, 0, 0, 1, 0, 1},
-										{0, 1, 0, 0, 1, 0, 1, 0},
-										{0, 0, 1, 0, 0, 1, 0, 1},
-										{0, 0, 0, 1, 1, 0, 1, 0} };
+	private static final String homepath = "C:\\Users\\Sebastian\\frag.dat";
 	
 	private JFrame frame;
 	private ImageIcon icon_logo;
@@ -373,28 +365,7 @@ public class GUI {
 		loadFile();
 		refreshInfoBox();
 		if (dnaGraph!=null) {
-			int[][] matrix = dnaGraph.getAdjacencyMatrix();
-			HamiltonianPath hc = new HamiltonianPath();
-			try {
-				log(printMatrix(m));
-				int[] path = hc.get(m);
-				String out = new String();
-				for (int i = 0; i < path.length; i++) {
-					out += String.valueOf(path[i]);
-				}
-				log(out);
-				
-				log(printMatrix(matrix));
-				path = hc.get(matrix);
-				out = new String();
-				for (int i = 0; i < path.length; i++) {
-					out += String.valueOf(path[i]);
-				}
-				log(out);
-			} catch (Exception e) {
-				log(e.toString());
-			}
-			
+			// show old (slow) algorithm
 			ArrayList<Edge> path = dnaGraph.hamiltonPath();
 			if (path==null) {
 				log("\n\nhamiltonPath() returned null");
@@ -402,6 +373,22 @@ public class GUI {
 				log("\nhamilton path with biggest weight for current graph:\n" + dnaGraph.printPath(path) + "\nweight: " + Graph.getWeight(path));
 			}
 			
+			// show new algorithm
+			int[][] matrix = dnaGraph.getAdjacencyMatrix();
+			HamiltonianPath hc = new HamiltonianPath();
+			try {				
+				log(printMatrix(matrix));
+				int[] intpath = hc.get(matrix);
+				String out = new String();
+				for (int i = 0; i < intpath.length; i++) {
+					out += String.valueOf(intpath[i]);
+				}
+				log(out);
+			} catch (Exception e) {
+				log(e.toString());
+			}
+			
+			// show nodes
 			log(dnaGraph.printNodes());
 		}
 	}
