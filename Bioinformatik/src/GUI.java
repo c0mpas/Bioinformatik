@@ -365,9 +365,10 @@ public class GUI {
 		loadFile();
 		refreshInfoBox();
 		if (dnaGraph!=null) {
-			Hamilton hamilton = new Hamilton(dnaGraph.getAdjacencyMatrix());
+			int[][] matrix = dnaGraph.getAdjacencyMatrix();
+			log(printMatrix(matrix));
 			try {
-				int[] path = hamilton.compute();
+				int[] path = HamiltonianCycle.get(matrix);
 				for (int i = 0; i < path.length; i++) {
 					log(String.valueOf(path[i]));
 				}

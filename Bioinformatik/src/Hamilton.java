@@ -25,10 +25,11 @@ public class Hamilton {
 	private boolean hamCycleUtil(int[][] graph, int[] path, int pos)
 	{
 		if(graph.length == pos){
-	        if (graph[ path[pos-1] ][ path[0] ] == 1)
-	            return true;
-	        else
-	            return false;
+			return true;
+//	        if (graph[ path[pos-1] ][ path[0] ] == 1)
+//	            return true;
+//	        else
+//	            return false;
 		}
 	    for (int v = 1; v < graph.length; v++)
 	    {
