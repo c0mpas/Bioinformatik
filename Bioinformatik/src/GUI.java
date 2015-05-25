@@ -363,7 +363,16 @@ public class GUI {
 		loadFile();
 		refreshInfoBox();
 		if (dnaGraph!=null) {
-			log(printMatrix(dnaGraph.getAdjacencyMatrix()));
+			Hamilton hamilton = new Hamilton(dnaGraph.getAdjacencyMatrix());
+			try {
+				int[] path = hamilton.compute();
+				for (int i = 0; i < path.length; i++) {
+					log(String.valueOf(path[i]));
+				}
+			} catch (Exception e) {
+				log(e.toString());
+			}
+			
 //			ArrayList<Edge> path = dnaGraph.hamiltonPath();
 //			if (path==null) {
 //				log("\n\nhamiltonPath() returned null");
