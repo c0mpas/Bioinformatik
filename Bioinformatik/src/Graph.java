@@ -32,6 +32,10 @@ public class Graph {
 		ArrayList<Edge> currentHamilton = null;
 		int hamiltonWeight = 0;
 		
+		// counter for statistics
+		int pathcount = 0;
+		int hamiltoncount = 0;
+		
 		// Create the initial vector of integers
 		ICombinatoricsVector<Integer> originalVector = Factory.createVector(array(this.nodes.size()));
 		// Create the permutation generator by calling the appropriate method in the Factory class
@@ -43,13 +47,11 @@ public class Graph {
 		ArrayList<Node> nodepath = null;
 		ArrayList<Edge> edgepath = null;
 		
-		// Use the result
+		// Use the permutations
 		for (ICombinatoricsVector<Integer> perm : gen) {
 			Permutation p = new Permutation();
 			for (Integer i : perm.getVector()) p.add(i);
-			
-			// current permutation p is ready to use
-			System.out.println("...checking path...");
+			pathcount++;
 			
 			// create path for permutation
 			nodepath = new ArrayList<Node>();
@@ -75,20 +77,22 @@ public class Graph {
 			}
 			// check if path has bigger weight
 			if (exists) {
+				hamiltoncount++;
 				int weight = getWeight(edgepath);
 				if (weight>hamiltonWeight) {
-					System.out.println("path found: " + edgepath.toString());
 					// override current hamilton
 					currentHamilton = edgepath;
 					hamiltonWeight = weight;
 				}
 			}
 		}
+		GUI.log("\n\nchecked " + pathcount + " paths");
+		GUI.log("found " + hamiltoncount + " hamilton paths");
 		return currentHamilton;
 	}
 
-	private int getWeight(ArrayList<Edge> list) {
-		if (list==null || list.isEmpty()) throw new IllegalArgumentException("no list");
+	public static int getWeight(ArrayList<Edge> list) {
+		if (list==null) throw new IllegalArgumentException("no list");
 		int count = 0;
 		for (Edge e : list) count += e.getWeight();
 		return count;
@@ -177,5 +181,10 @@ public class Graph {
 		return p;
 	}
 	
+	public static String printPath(ArrayList<Edge> list) {
+		StringBuilder sb = new StringBuilder();
+		for (Edge e : list) sb.append(e).append("\n");
+		return sb.toString();
+	}
 	
 }

@@ -14,10 +14,10 @@ public class Assembler {
 	public ArrayList<Sequence> run() {
 		ArrayList<Sequence> list = new ArrayList<Sequence>();
 		// merge graph step by step until no edges left
-		ArrayList<Edge> edges = graph.getEdges();
+		ArrayList<Edge> edges = graph.hamiltonPath();
 		while (edges.size() > 0) {
 			graph.merge(edges.get(0));
-			edges = graph.getEdges();
+			edges = graph.hamiltonPath();
 		}
 		// save remaining sequences (nodes) in list
 		for (Node n : graph.getNodes()) list.add(n.getSequence());

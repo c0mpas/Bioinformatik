@@ -22,10 +22,11 @@ import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 
 public class GUI {
 
+	private static JTextArea txtrLog;
+	
 	private JFrame frame;
 	private ImageIcon icon_logo;
 	private JScrollPane scrollPane;
-	private JTextArea txtrLog;
 	private JLabel labelInfobox;
 	private JTextField txtFilepath;
 	private JButton btnChoose;
@@ -179,14 +180,25 @@ public class GUI {
 					log("no graph available");
 					return;
 				}
-				ArrayList<Edge> sortedEdges = dnaGraph.getEdges();
-				if (sortedEdges.isEmpty()) {
-					log("no edges in graph");
+				ArrayList<Edge> sortedEdges = dnaGraph.hamiltonPath();
+				if (sortedEdges!=null) {
+					if (sortedEdges.isEmpty()) {
+						log("no edges in graph");
+					} else {
+						Edge e = sortedEdges.get(0);
+						log("merge nodes " + dnaGraph.getIndex(e.getTo()) + " and " + dnaGraph.getIndex(e.getFrom()) + ": " + e.toString());
+						dnaGraph.merge(e);
+						refreshInfoBox();
+					}
 				} else {
-					Edge e = sortedEdges.get(0);
-					log("merge nodes " + dnaGraph.getIndex(e.getTo()) + " and " + dnaGraph.getIndex(e.getFrom()) + ": " + e.toString());
-					dnaGraph.merge(e);
-					refreshInfoBox();
+					ArrayList<Node> list = dnaGraph.getNodes();
+					if (list.size() > 1) {
+						log("\nDNA Sequence could not be assembled completely\nResults:");
+						for (Node n : list) log(n.toString());
+					} else if (list.size() == 1) {
+						log("\nDNA Sequence assembled\nResult:");
+						log(list.get(0).toString());
+					}
 				}
 			}
 		});
@@ -286,10 +298,8 @@ public class GUI {
 		}
 	}
 	
-	public void log(String text) {
+	public static void log(String text) {
 		if (txtrLog==null || text.isEmpty()) return;
-		// java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-		// timestamp.setNanos(0);
 		txtrLog.append("\n" + text);
 	}
 	
@@ -342,9 +352,9 @@ public class GUI {
 		if (dnaGraph!=null) {
 			ArrayList<Edge> path = dnaGraph.hamiltonPath();
 			if (path==null) {
-				log("hamiltonPath() returned null");
+				log("\n\nhamiltonPath() returned null");
 			} else {
-				log("hamilton path for current graph:\n" + path.toString());
+				log("\nhamilton path with biggest weight for current graph:\n" + Graph.printPath(path) + "\nweight: " + Graph.getWeight(path));
 			}
 		}
 	}
