@@ -39,11 +39,9 @@ public class HamiltonianCycle
     {
     	display();
         /** solution **/
-        if (graph[vertex][0] == 1 && pathCount == V)
+        
+    	if (graph[vertex][pathCount] == 1 && pathCount+1 == V)
             throw new Exception("Solution found");
-//        /** all vertices selected but last vertex not linked to 0 **/
-//        if (pathCount == V)
-//            return;
  
         for (int v = 0; v < V; v++)
         {
@@ -52,6 +50,8 @@ public class HamiltonianCycle
             {
                 /** add to path **/            
                 path[pathCount++] = v;    
+                
+                
                 /** remove connection **/            
                 graph[vertex][v] = 0;
                 graph[v][vertex] = 0;

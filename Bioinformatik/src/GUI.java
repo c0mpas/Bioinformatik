@@ -24,7 +24,7 @@ public class GUI {
 
 	private static JTextArea txtrLog;
 	
-	private static final String homepath = "C:\\Users\\Sebastian\\frag.dat";
+	private static final String homepath = "C:\\Users\\cgeidt\\Desktop\\frag.dat";
 	
 	private JFrame frame;
 	private ImageIcon icon_logo;
