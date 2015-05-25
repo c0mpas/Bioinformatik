@@ -24,6 +24,8 @@ public class GUI {
 
 	private static JTextArea txtrLog;
 	
+	private static final String homepath = "C:\\Users\\Sebastian\\frag.dat";
+	
 	private JFrame frame;
 	private ImageIcon icon_logo;
 	private JScrollPane scrollPane;
@@ -359,7 +361,7 @@ public class GUI {
 	
 	// run custom test
 	private void run_test() {
-		if (txtFilepath!=null) txtFilepath.setText("C:\\Users\\Sebastian\\frag.dat");
+		if (txtFilepath!=null) txtFilepath.setText(homepath);
 		loadFile();
 		refreshInfoBox();
 		if (dnaGraph!=null) {
