@@ -24,7 +24,15 @@ public class GUI {
 
 	private static JTextArea txtrLog;
 	
-	private static final String homepath = "C:\\Users\\cgeidt\\Desktop\\frag.dat";
+	private static final String homepath = "C:\\Users\\Sebastian\\frag.dat";
+	private static final int[][] m = {	{0, 1, 0, 1, 1, 0, 0, 0},
+										{1, 0, 1, 0, 0, 1, 0, 0},
+										{0, 1, 0, 1, 0, 0, 1, 0},
+										{1, 0, 1, 0, 0, 0, 0, 1},
+										{1, 0, 0, 0, 0, 1, 0, 1},
+										{0, 1, 0, 0, 1, 0, 1, 0},
+										{0, 0, 1, 0, 0, 1, 0, 1},
+										{0, 0, 0, 1, 1, 0, 1, 0} };
 	
 	private JFrame frame;
 	private ImageIcon icon_logo;
@@ -366,23 +374,25 @@ public class GUI {
 		refreshInfoBox();
 		if (dnaGraph!=null) {
 			int[][] matrix = dnaGraph.getAdjacencyMatrix();
-			log(printMatrix(matrix));
+			log(printMatrix(m));
 			HamiltonianCycle hc = new HamiltonianCycle();
 			try {
-				int[] path = hc.get(matrix);
+				int[] path = hc.get(m);
+				String out = new String();
 				for (int i = 0; i < path.length; i++) {
-					log(String.valueOf(path[i]));
+					out += String.valueOf(path[i]);
 				}
+				log(out);
 			} catch (Exception e) {
 				log(e.toString());
 			}
 			
-//			ArrayList<Edge> path = dnaGraph.hamiltonPath();
-//			if (path==null) {
-//				log("\n\nhamiltonPath() returned null");
-//			} else {
-//				log("\nhamilton path with biggest weight for current graph:\n" + Graph.printPath(path) + "\nweight: " + Graph.getWeight(path));
-//			}
+			ArrayList<Edge> path = dnaGraph.hamiltonPath();
+			if (path==null) {
+				log("\n\nhamiltonPath() returned null");
+			} else {
+				log("\nhamilton path with biggest weight for current graph:\n" + dnaGraph.printPath(path) + "\nweight: " + Graph.getWeight(path));
+			}
 		}
 	}
 	

@@ -199,9 +199,12 @@ public class Graph {
 		return matrix;
 	}
 	
-	public static String printPath(ArrayList<Edge> list) {
+	public String printPath(ArrayList<Edge> list) {
 		StringBuilder sb = new StringBuilder();
-		for (Edge e : list) sb.append(e).append("\n");
+		for (Edge e : list) {
+			sb.append("[" + nodes.indexOf(e.getFrom()) + "-->" + nodes.indexOf(e.getTo()) + "]");
+			sb.append(e).append("\n");
+		}
 		return sb.toString();
 	}
 	
