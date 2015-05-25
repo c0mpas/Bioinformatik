@@ -374,11 +374,20 @@ public class GUI {
 		refreshInfoBox();
 		if (dnaGraph!=null) {
 			int[][] matrix = dnaGraph.getAdjacencyMatrix();
-			log(printMatrix(m));
+
 			HamiltonianCycle hc = new HamiltonianCycle();
 			try {
+				log(printMatrix(m));
 				int[] path = hc.get(m);
 				String out = new String();
+				for (int i = 0; i < path.length; i++) {
+					out += String.valueOf(path[i]);
+				}
+				log(out);
+				
+				log(printMatrix(matrix));
+				path = hc.get(matrix);
+				out = new String();
 				for (int i = 0; i < path.length; i++) {
 					out += String.valueOf(path[i]);
 				}
@@ -393,6 +402,8 @@ public class GUI {
 			} else {
 				log("\nhamilton path with biggest weight for current graph:\n" + dnaGraph.printPath(path) + "\nweight: " + Graph.getWeight(path));
 			}
+			
+			log(dnaGraph.printNodes());
 		}
 	}
 	

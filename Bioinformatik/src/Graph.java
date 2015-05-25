@@ -208,4 +208,11 @@ public class Graph {
 		return sb.toString();
 	}
 	
+	public String printNodes() {
+		StringBuilder sb = new StringBuilder("\nnodes:\n");
+		for (Node n : this.nodes) {
+			sb.append(String.valueOf(this.nodes.indexOf(n)) + ": " + n.getSequence() + "\n");
+		}
+		return sb.toString();
+	}
 }
