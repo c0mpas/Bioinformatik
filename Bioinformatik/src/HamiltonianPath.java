@@ -2,13 +2,13 @@
 import java.util.Arrays;
  
 /** Class HamiltonianCycle **/
-public class HamiltonianCycle
+public class HamiltonianPath
 {
     private int V, pathCount;
     private int[] path;     
     private int[][] graph;
  
-    public HamiltonianCycle() {
+    public HamiltonianPath() {
     	
     }
     
@@ -40,8 +40,9 @@ public class HamiltonianCycle
     	display();
         /** solution **/
         
-    	if (graph[vertex][pathCount] == 1 && pathCount+1 == V)
+    	if (graph[vertex][pathCount] == 1 && pathCount+1 == V){
             throw new Exception("Solution found");
+    	}
  
         for (int v = 0; v < V; v++)
         {

@@ -24,7 +24,7 @@ public class GUI {
 
 	private static JTextArea txtrLog;
 	
-	private static final String homepath = "C:\\Users\\Sebastian\\frag.dat";
+	private static final String homepath = "C:\\Users\\cgeidt\\Desktop\\frag.dat";
 	private static final int[][] m = {	{0, 1, 0, 1, 1, 0, 0, 0},
 										{1, 0, 1, 0, 0, 1, 0, 0},
 										{0, 1, 0, 1, 0, 0, 1, 0},
@@ -375,7 +375,7 @@ public class GUI {
 		if (dnaGraph!=null) {
 			int[][] matrix = dnaGraph.getAdjacencyMatrix();
 			log(printMatrix(m));
-			HamiltonianCycle hc = new HamiltonianCycle();
+			HamiltonianPath hc = new HamiltonianPath();
 			try {
 				int[] path = hc.get(m);
 				String out = new String();
