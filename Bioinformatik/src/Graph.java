@@ -43,7 +43,6 @@ public class Graph {
 		
 		// helpers
 		Boolean exists = null;
-		Boolean found = null;
 		ArrayList<Node> nodepath = null;
 		ArrayList<Edge> edgepath = null;
 		
@@ -58,21 +57,14 @@ public class Graph {
 			edgepath = new ArrayList<Edge>();
 			exists = true;
 			for (Integer i : p.get()) nodepath.add(this.nodes.get(i));
-			// check if path exists
+			// check if path exists, iterate over all nodes in path
 			for (int i = 0; i < nodepath.size()-1; i++) {
-				if (exists) {
-					found = false;
-					// check node
-					for (Edge e : nodepath.get(i).getEdges()) {
-						if (!found && i<(nodepath.size()-1)) {
-							// find edge to next node
-							if (e.getTo().getSequence().equals(nodepath.get(i+1).getSequence())) {
-								found = true;
-								edgepath.add(e);
-							}
-						}
-					}
-					if (!found) exists = false;
+				Edge c = getConnection(nodepath.get(i), nodepath.get(i+1));
+				if (c!=null) {
+					edgepath.add(c);
+				} else {
+					exists = false;
+					break;
 				}
 			}
 			// check if path has bigger weight
@@ -180,6 +172,15 @@ public class Graph {
 		for (int i = 0; i < n; i++) p[i] = i;
 		return p;
 	}
+	
+	// returns edge for two nodes (if exists)
+	public static Edge getConnection(Node from, Node to) {
+		for (Edge e : from.getEdges()) {
+			if (e.getTo().getSequence().equals(to.getSequence())) return e;
+		}
+		return null;
+	}
+	
 	
 	public static String printPath(ArrayList<Edge> list) {
 		StringBuilder sb = new StringBuilder();
