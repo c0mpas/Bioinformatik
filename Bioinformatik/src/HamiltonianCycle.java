@@ -37,13 +37,14 @@ public class HamiltonianCycle
     /** function to find paths recursively **/
     public void solve(int vertex) throws Exception
     {
-    	display();
         /** solution **/
         if (graph[vertex][0] == 1 && pathCount == V)
-            throw new Exception("Solution found");
-//        /** all vertices selected but last vertex not linked to 0 **/
-//        if (pathCount == V)
-//            return;
+        	throw new Exception("Solution found");
+        /** all vertices selected but last vertex not linked to 0 **/
+        if (pathCount == V) {
+            display();
+            return;
+        }
  
         for (int v = 0; v < V; v++)
         {
