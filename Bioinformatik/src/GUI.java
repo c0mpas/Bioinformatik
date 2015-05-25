@@ -344,18 +344,32 @@ public class GUI {
 		labelInfobox.setText(sb.toString());
 	}
 	
+	private String printMatrix(int[][] matrix) {
+		int size = matrix.length;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < size; i++) {
+			StringBuilder row = new StringBuilder();
+			for (int j = 0; j < size; j++) {
+				row.append(matrix[i][j] + " ");
+			}
+			sb.append(row.toString()).append("\n");
+		}
+		return sb.toString();
+	}
+	
 	// run custom test
 	private void run_test() {
 		if (txtFilepath!=null) txtFilepath.setText("C:\\Users\\Sebastian\\frag.dat");
 		loadFile();
 		refreshInfoBox();
 		if (dnaGraph!=null) {
-			ArrayList<Edge> path = dnaGraph.hamiltonPath();
-			if (path==null) {
-				log("\n\nhamiltonPath() returned null");
-			} else {
-				log("\nhamilton path with biggest weight for current graph:\n" + Graph.printPath(path) + "\nweight: " + Graph.getWeight(path));
-			}
+			log(printMatrix(dnaGraph.getAdjacencyMAtrix()));
+//			ArrayList<Edge> path = dnaGraph.hamiltonPath();
+//			if (path==null) {
+//				log("\n\nhamiltonPath() returned null");
+//			} else {
+//				log("\nhamilton path with biggest weight for current graph:\n" + Graph.printPath(path) + "\nweight: " + Graph.getWeight(path));
+//			}
 		}
 	}
 	

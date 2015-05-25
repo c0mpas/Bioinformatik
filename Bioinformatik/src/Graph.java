@@ -46,7 +46,7 @@ public class Graph {
 		ArrayList<Node> nodepath = null;
 		ArrayList<Edge> edgepath = null;
 		
-		// Use the permutations
+		// Iterate over permutations
 		for (ICombinatoricsVector<Integer> perm : gen) {
 			Permutation p = new Permutation();
 			for (Integer i : perm.getVector()) p.add(i);
@@ -181,6 +181,23 @@ public class Graph {
 		return null;
 	}
 	
+	// returns an adjacency matrix representing the graph
+	public int[][] getAdjacencyMAtrix() {
+		if (this.nodes==null || this.nodes.isEmpty()) throw new RuntimeException("no graph available");
+		int size = this.nodes.size();
+		int[][] matrix = new int[size][size];
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				Edge e = getConnection(this.nodes.get(i), this.nodes.get(j));
+				if (e!=null) {
+					matrix[i][j] = 1;
+				} else {
+					matrix[i][j] = 0;
+				}
+			}
+		}
+		return matrix;
+	}
 	
 	public static String printPath(ArrayList<Edge> list) {
 		StringBuilder sb = new StringBuilder();
