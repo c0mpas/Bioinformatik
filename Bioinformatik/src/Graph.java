@@ -182,7 +182,7 @@ public class Graph {
 	}
 	
 	// returns an adjacency matrix representing the graph
-	public int[][] getAdjacencyMAtrix() {
+	public int[][] getAdjacencyMatrix() {
 		if (this.nodes==null || this.nodes.isEmpty()) throw new RuntimeException("no graph available");
 		int size = this.nodes.size();
 		int[][] matrix = new int[size][size];

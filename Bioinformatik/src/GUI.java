@@ -363,7 +363,7 @@ public class GUI {
 		loadFile();
 		refreshInfoBox();
 		if (dnaGraph!=null) {
-			log(printMatrix(dnaGraph.getAdjacencyMAtrix()));
+			log(printMatrix(dnaGraph.getAdjacencyMatrix()));
 //			ArrayList<Edge> path = dnaGraph.hamiltonPath();
 //			if (path==null) {
 //				log("\n\nhamiltonPath() returned null");
