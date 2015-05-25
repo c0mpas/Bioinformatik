@@ -15,7 +15,7 @@ public class Assembler {
 		ArrayList<Sequence> list = new ArrayList<Sequence>();
 		// merge graph step by step until no edges left
 		ArrayList<Edge> edges = graph.hamiltonPath();
-		while (edges.size() > 0) {
+		while (edges!=null && edges.size() > 0) {
 			graph.merge(edges.get(0));
 			edges = graph.hamiltonPath();
 		}
