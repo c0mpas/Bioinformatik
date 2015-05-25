@@ -1,8 +1,4 @@
-/**
- **   Java Program to Implement Hamiltonian Cycle Algorithm
- **/
- 
-import java.util.Scanner;
+
 import java.util.Arrays;
  
 /** Class HamiltonianCycle **/
@@ -12,6 +8,10 @@ public class HamiltonianCycle
     private int[] path;     
     private int[][] graph;
  
+    public HamiltonianCycle() {
+    	
+    }
+    
     /** Function to find cycle **/
     public void findHamiltonianCycle(int[][] g)
     {
@@ -89,28 +89,28 @@ public class HamiltonianCycle
             System.out.print(path[i % V] +" ");
         System.out.println();
     }    
-    
-    /** Main function **/
-    public static void main (String[] args) 
-    {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("HamiltonianCycle Algorithm Test\n");
-        /** Make an object of HamiltonianCycle class **/
-        HamiltonianCycle hc = new HamiltonianCycle();
- 
-        /** Accept number of vertices **/
-        System.out.println("Enter number of vertices\n");
-        int V = scan.nextInt();
- 
-        /** get graph **/
-        System.out.println("\nEnter matrix\n");
-        int[][] graph = new int[V][V];
-        for (int i = 0; i < V; i++)
-            for (int j = 0; j < V; j++)
-                graph[i][j] = scan.nextInt();
- 
-        hc.findHamiltonianCycle(graph);        
-    }   
+//    
+//    /** Main function **/
+//    public static void main (String[] args) 
+//    {
+//        Scanner scan = new Scanner(System.in);
+//        System.out.println("HamiltonianCycle Algorithm Test\n");
+//        /** Make an object of HamiltonianCycle class **/
+//        HamiltonianCycle hc = new HamiltonianCycle();
+// 
+//        /** Accept number of vertices **/
+//        System.out.println("Enter number of vertices\n");
+//        int V = scan.nextInt();
+// 
+//        /** get graph **/
+//        System.out.println("\nEnter matrix\n");
+//        int[][] graph = new int[V][V];
+//        for (int i = 0; i < V; i++)
+//            for (int j = 0; j < V; j++)
+//                graph[i][j] = scan.nextInt();
+// 
+//        hc.findHamiltonianCycle(graph);        
+//    }   
 
     public static final int[] get(int[][] matrix) {
         HamiltonianCycle hc = new HamiltonianCycle();
