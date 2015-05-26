@@ -225,16 +225,14 @@ public class Graph {
 	
 	public static int getBiggest(ArrayList<Edge> list) {
 		int index = -1;
-		int weight = 0;
+		int weight = -1;
+		int currentWeight = -1;
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println("index:" + index + ",weight:" + weight);
-			int currentWeight = list.get(i).getWeight();
+			currentWeight = list.get(i).getWeight();
 			if (currentWeight > weight) {
-				System.out.println("found bigger one: currentWeight:" + currentWeight + ",weight:" + weight + ",index:" + i);
 				index = i;
 				weight = currentWeight;
 			}
-			System.out.println("currentWeight:" + currentWeight + ",weight:" + weight);
 		}
 		return index;
 	}
