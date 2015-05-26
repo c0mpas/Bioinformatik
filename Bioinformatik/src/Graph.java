@@ -33,6 +33,7 @@ public class Graph {
 	}
 
 	// return hamilton path
+	// checks all possible permutations
 	public ArrayList<Edge> hamiltonPathSlow() {
 		if (this.nodes==null || this.nodes.isEmpty()) throw new RuntimeException("graph not initialized");
 		ArrayList<Edge> currentHamilton = null;
@@ -89,6 +90,7 @@ public class Graph {
 		return currentHamilton;
 	}
 
+	// return the weight of a path (edge list)
 	public static int getWeight(ArrayList<Edge> list) {
 		if (list==null) throw new IllegalArgumentException("no list");
 		int count = 0;
@@ -114,6 +116,7 @@ public class Graph {
 		}
 	}
 	
+	// merge two nodes (connected with given edge)
 	public void merge(Edge e) {
 		if (e==null) throw new IllegalArgumentException("edge is null");
 		GUI.log("merging: " + e);
