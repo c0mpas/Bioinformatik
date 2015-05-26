@@ -19,6 +19,7 @@ import net.miginfocom.swing.MigLayout;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
+import javax.swing.JCheckBox;
 
 public class GUI {
 
@@ -40,6 +41,7 @@ public class GUI {
 	private JButton btnMergeStep;
 	private JButton btnRunAssembler;
 	private JLabel lblImageArea;
+	private JCheckBox chckbxShowIntermediateGraph;
 	private JButton btnTest;
 	
 	private org.graphstream.graph.Graph graph;
@@ -47,7 +49,7 @@ public class GUI {
 	private static final String graphStyle = "node { size: 10px, 15px; shape: rounded-box; fill-mode: none; stroke-mode: none; size-mode: fit; text-style: bold; text-background-mode: rounded-box; text-background-color: #EEEE; text-padding: 5px, 5px; } edge { text-style: bold; text-background-mode: rounded-box; text-background-color: #FFFFFF; text-padding: 5px, 5px; arrow-shape: arrow; arrow-size: 12px, 6px; }";
 	private Graph dnaGraph;
 	private Assembler assembler;
-
+	
 //	// time measurement
 //	long time = System.currentTimeMillis();
 //	// time measurement
@@ -90,7 +92,7 @@ public class GUI {
 		icon_logo = new ImageIcon(getClass().getResource("/graphics/dna_icon.png"));
 		frame.setIconImage(icon_logo.getImage());
 		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][30px:n][30px:n][10px:n][30px:n][30px:n]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][][][30px:n][30px:n][10px:n][30px:n][30px:n]"));
 		
 		// text pane
 		labelLog = new JLabel();
@@ -101,7 +103,7 @@ public class GUI {
 		
 		// scroll layout
 		scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, "cell 0 1 2 8,grow");
+		frame.getContentPane().add(scrollPane, "cell 0 1 2 10,grow");
 		
 		// text area in scroll layout
 		txtrLog = new JTextArea();
@@ -121,6 +123,10 @@ public class GUI {
 		//lblImageArea.setIconTextGap(-300);
 		frame.getContentPane().add(lblImageArea, "cell 2 3 3 1,alignx center,aligny center");
 		
+		// checkbox for intermediate graph
+		chckbxShowIntermediateGraph = new JCheckBox("show intermediate graph");
+		frame.getContentPane().add(chckbxShowIntermediateGraph, "cell 2 5,growx,aligny center");
+		
 		// run assembler button
 		btnRunAssembler = new JButton("run assembler");
 		btnRunAssembler.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_assemble.png")));
@@ -131,7 +137,7 @@ public class GUI {
 				runAssembler();
 			}
 		});
-		frame.getContentPane().add(btnRunAssembler, "cell 2 4,growx,aligny center");
+		frame.getContentPane().add(btnRunAssembler, "cell 2 6,growx,aligny center");
 		
 		// clear log button
 		btnClearLog = new JButton("clear log");
@@ -143,7 +149,7 @@ public class GUI {
 				clearLog();
 			}
 		});
-		frame.getContentPane().add(btnClearLog, "cell 2 5,growx,aligny center");
+		frame.getContentPane().add(btnClearLog, "cell 2 7,growx,aligny center");
 		
 		// sort button
 		btnSortEdges = new JButton("sort edges");
@@ -159,7 +165,7 @@ public class GUI {
 				}
 			}
 		});
-		frame.getContentPane().add(btnSortEdges, "cell 4 4,growx,aligny center");
+		frame.getContentPane().add(btnSortEdges, "cell 4 6,growx,aligny center");
 		
 		// merge button
 		btnMergeStep = new JButton("merge step");
@@ -171,7 +177,7 @@ public class GUI {
 				mergeStep();
 			}
 		});
-		frame.getContentPane().add(btnMergeStep, "cell 3 4,growx,aligny center");
+		frame.getContentPane().add(btnMergeStep, "cell 3 6,growx,aligny center");
 		
 		// button to show graph
 		btnShowGraph = new JButton("show graph");
@@ -180,16 +186,10 @@ public class GUI {
 		btnShowGraph.setIconTextGap(10);
 		btnShowGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					refreshGraph();
-					viewer = graph.display();
-			        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
-				} catch (Exception e) {
-					log(e.toString());
-				}
+				showGraph();
 			}
 		});
-		frame.getContentPane().add(btnShowGraph, "cell 4 5,growx,aligny center");
+		frame.getContentPane().add(btnShowGraph, "cell 4 7,growx,aligny center");
 				
 		// button to choose file
 		btnChoose = new JButton("select file");
@@ -200,7 +200,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 		}});
-		frame.getContentPane().add(btnChoose, "cell 2 7,growx,aligny center");
+		frame.getContentPane().add(btnChoose, "cell 2 9,growx,aligny center");
 		
 		// load button
 		btnLoad = new JButton("load file");
@@ -213,13 +213,13 @@ public class GUI {
 				refreshInfoBox();
 			}
 		});
-		frame.getContentPane().add(btnLoad, "cell 4 7,growx,aligny center");
+		frame.getContentPane().add(btnLoad, "cell 4 9,growx,aligny center");
 
 		// file path text field
 		txtFilepath = new JTextField();
 		txtFilepath.setText("");
 		txtFilepath.setColumns(1);
-		frame.getContentPane().add(txtFilepath, "cell 2 8 3 1,growx");
+		frame.getContentPane().add(txtFilepath, "cell 2 10 3 1,growx");
 		
 		// test button
 		btnTest = new JButton("test");
@@ -231,7 +231,7 @@ public class GUI {
 				runTest();
 			}
 		});
-		frame.getContentPane().add(btnTest, "cell 3 5,growx,aligny center");
+		frame.getContentPane().add(btnTest, "cell 3 7,growx,aligny center");
 	}
 	
 	private void chooseFile() {
@@ -281,6 +281,16 @@ public class GUI {
 		return new Graph(list);
 	}
 	
+	public void showGraph() {
+		try {
+			refreshGraph();
+			viewer = graph.display();
+	        viewer.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
+		} catch (Exception e) {
+			log(e.toString());
+		}
+	}
+	
 	// refresh gui graph 
 	private void refreshGraph() {
 		graph = new MultiGraph("graph");
@@ -323,32 +333,37 @@ public class GUI {
 		// time measurement
 		long time = System.currentTimeMillis();
 		// merge step
-		ArrayList<Edge> sortedEdges = dnaGraph.hamiltonPath();
-		if (sortedEdges!=null) {
-			if (sortedEdges.isEmpty()) {
+		ArrayList<Edge> hampath = dnaGraph.hamiltonPath();
+		if (hampath!=null) {
+			if (hampath.isEmpty()) {
 				log("no edges in graph");
+				// show remaining nodes
+				ArrayList<Node> list = dnaGraph.getNodes();
+				if (list.size() > 1) {
+					log("\nDNA Sequence could not be assembled completely\nResults:");
+					for (Node n : list) log(n.toString());
+				} else if (list.size() == 1) {
+					log("\nDNA Sequence assembled\nResult:");
+					log(list.get(0).toString());
+				}
 			} else {
-				log("current hamilton path: " + sortedEdges);
-				Edge e = sortedEdges.get(Graph.getBiggest(sortedEdges));
+				log("current hamilton path:");
+				for (Edge e : hampath) log(e.toString());
+				Edge e = hampath.get(Graph.getBiggest(hampath));
 				log("merge nodes " + dnaGraph.getIndex(e.getTo()) + " and " + dnaGraph.getIndex(e.getFrom()) + ": " + e.toString());
 				// merge edge with biggest weight
 				dnaGraph.merge(e);
 				refreshInfoBox();
 			}
 		} else {
+			log("hamiltonPath() returned null");
 			log(dnaGraph.printNodes()); // show nodes
-			ArrayList<Node> list = dnaGraph.getNodes();
-			if (list.size() > 1) {
-				log("\nDNA Sequence could not be assembled completely\nResults:");
-				for (Node n : list) log(n.toString());
-			} else if (list.size() == 1) {
-				log("\nDNA Sequence assembled\nResult:");
-				log(list.get(0).toString());
-			}
 		}
 		// time measurement
 		time = System.currentTimeMillis() - time;
 		log("time elapsed: " + time + "ms\n");
+		
+		if (chckbxShowIntermediateGraph.isSelected()) showGraph();
 	}
 	
 	// run assembler
