@@ -9,25 +9,31 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 public class Graph {
 
 	private ArrayList<Node> nodes;
+	private ArrayList<Edge> hamiltonPath;
+	private int hamcount;
 	
 	
 	public Graph() {
 		this.nodes = new ArrayList<Node>();
+		this.hamiltonPath = null;
+		this.hamcount = -1;
 	}
 	
 	public Graph(ArrayList<Sequence> sequences) {
 		this();
-		for(Sequence sequence : sequences) {
-			addNode(new Node(sequence));
-		}
+		for(Sequence sequence : sequences) addNode(new Node(sequence));
 	}
 
 	public ArrayList<Node> getNodes() {
 		return this.nodes;
 	}
-	
+
+	public int getHamcount() {
+		return hamcount;
+	}
+
 	// return hamilton path
-	public ArrayList<Edge> hamiltonPath() {
+	public ArrayList<Edge> hamiltonPathSlow() {
 		if (this.nodes==null || this.nodes.isEmpty()) throw new RuntimeException("graph not initialized");
 		ArrayList<Edge> currentHamilton = null;
 		int hamiltonWeight = 0;
@@ -110,6 +116,7 @@ public class Graph {
 	
 	public void merge(Edge e) {
 		if (e==null) throw new IllegalArgumentException("edge is null");
+		GUI.log("merging: " + e);
 		Sequence s = Sequence.merge(e.getFrom().getSequence(), e.getTo().getSequence());
 		// remove nodes
 		this.removeNode(e.getTo());
@@ -160,8 +167,8 @@ public class Graph {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("graph: [");
-		for (Edge e : getEdges()) sb.append(e.toString());
+		sb.append("graph: [\n");
+		for (Edge e : getEdges()) sb.append(e.toString()).append("\n");
 		sb.append("]");
 		return sb.toString();
 	}
@@ -214,5 +221,66 @@ public class Graph {
 			sb.append(String.valueOf(this.nodes.indexOf(n)) + ": " + n.getSequence() + "\n");
 		}
 		return sb.toString();
+	}
+	
+	public static int getBiggest(ArrayList<Edge> list) {
+		int index = -1;
+		int weight = 0;
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println("index:" + index + ",weight:" + weight);
+			int currentWeight = list.get(i).getWeight();
+			if (currentWeight > weight) {
+				System.out.println("found bigger one: currentWeight:" + currentWeight + ",weight:" + weight + ",index:" + i);
+				index = i;
+				weight = currentWeight;
+			}
+			System.out.println("currentWeight:" + currentWeight + ",weight:" + weight);
+		}
+		return index;
+	}
+	
+	public ArrayList<Edge> hamiltonPath() {
+		if (this.nodes==null || this.nodes.isEmpty()) throw new RuntimeException("graph not initialized");
+		this.hamiltonPath = new ArrayList<Edge>();
+		this.hamcount = 0;
+		permute(new ArrayList<Edge>(), new ArrayList<Node>(), this.nodes);
+		return this.hamiltonPath;
+	}
+	
+	private void permute(ArrayList<Edge> ham, ArrayList<Node> head, ArrayList<Node> tail) {
+		if (ham==null || head==null || tail==null) throw new IllegalArgumentException("list is null");
+		
+		int headsize = head.size();
+		if (headsize > 1) {
+			// check if there is an edge between last two nodes
+			Edge e = Graph.getConnection(head.get(headsize-2), head.get(headsize-1));
+			if (e!=null) {
+				// add new edge to current hamilton path
+				ham.add(e);
+			} else {
+				// no connection for last node, end here
+				return;
+			}
+		}
+		
+		// if tail is empty, path is complete
+		if (tail.isEmpty()) {
+			this.hamcount++;
+			// check if this hamilton path has bigger weight than former path
+			if (Graph.getWeight(ham) > Graph.getWeight(this.hamiltonPath)) {
+				// overwrite current hamilton path
+				this.hamiltonPath = ham;
+			}
+		}
+		
+		// proceed
+		for (Node n : tail) {
+			ArrayList<Node> newhead = (ArrayList<Node>)head.clone();
+			ArrayList<Node> newtail = (ArrayList<Node>)tail.clone();
+			ArrayList<Edge> newham = (ArrayList<Edge>)ham.clone();
+			newhead.add(n);
+			newtail.remove(newtail.indexOf(n));
+			permute(newham, newhead, newtail);
+		}
 	}
 }

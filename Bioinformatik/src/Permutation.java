@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-
 public class Permutation {
 	
 	private ArrayList<Integer> list;
@@ -31,5 +30,4 @@ public class Permutation {
 		sb.append("]");
 		return sb.toString();
 	}
-	
 }

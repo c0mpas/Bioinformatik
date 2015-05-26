@@ -48,6 +48,13 @@ public class GUI {
 	private Graph dnaGraph;
 	private Assembler assembler;
 
+//	// time measurement
+//	long time = System.currentTimeMillis();
+//	// time measurement
+//	time = System.currentTimeMillis() - time;
+//	log("time elapsed: " + time + "ms\n");	
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -121,22 +128,7 @@ public class GUI {
 		btnRunAssembler.setIconTextGap(10);
 		btnRunAssembler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (dnaGraph==null) {
-					log("no graph available");
-				} else {
-					assembler = new Assembler(dnaGraph);
-					ArrayList<Sequence> list = assembler.run();
-					refreshInfoBox();
-					if (list.size() > 1) {
-						log("DNA Sequence could not be assembled completely\nResults:");
-						for (Sequence s : list) log(s.toString());
-					} else if (list.size() == 1) {
-						log("DNA Sequence assembled\nResult:");
-						log(list.get(0).toString());
-					} else {
-						log("Assembler did not provide any result. Something went wrong.");
-					}
-				}
+				runAssembler();
 			}
 		});
 		frame.getContentPane().add(btnRunAssembler, "cell 2 4,growx,aligny center");
@@ -176,31 +168,7 @@ public class GUI {
 		btnMergeStep.setIconTextGap(10);
 		btnMergeStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// merge nodes from first (heaviest) edge
-				if (dnaGraph==null) {
-					log("no graph available");
-					return;
-				}
-				ArrayList<Edge> sortedEdges = dnaGraph.hamiltonPath();
-				if (sortedEdges!=null) {
-					if (sortedEdges.isEmpty()) {
-						log("no edges in graph");
-					} else {
-						Edge e = sortedEdges.get(0);
-						log("merge nodes " + dnaGraph.getIndex(e.getTo()) + " and " + dnaGraph.getIndex(e.getFrom()) + ": " + e.toString());
-						dnaGraph.merge(e);
-						refreshInfoBox();
-					}
-				} else {
-					ArrayList<Node> list = dnaGraph.getNodes();
-					if (list.size() > 1) {
-						log("\nDNA Sequence could not be assembled completely\nResults:");
-						for (Node n : list) log(n.toString());
-					} else if (list.size() == 1) {
-						log("\nDNA Sequence assembled\nResult:");
-						log(list.get(0).toString());
-					}
-				}
+				mergeStep();
 			}
 		});
 		frame.getContentPane().add(btnMergeStep, "cell 3 4,growx,aligny center");
@@ -260,7 +228,7 @@ public class GUI {
 		btnTest.setIconTextGap(20);
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				run_test();
+				runTest();
 			}
 		});
 		frame.getContentPane().add(btnTest, "cell 3 5,growx,aligny center");
@@ -345,54 +313,76 @@ public class GUI {
 		labelInfobox.setText(sb.toString());
 	}
 	
-	private String printMatrix(int[][] matrix) {
-		int size = matrix.length;
-		StringBuilder sb = new StringBuilder("adjacency matrix:\n");
-		for (int i = 0; i < size; i++) {
-			StringBuilder row = new StringBuilder();
-			for (int j = 0; j < size; j++) {
-				row.append(matrix[i][j] + " ");
-			}
-			sb.append(row.toString()).append("\n");
+	// perform one merge step
+	private void mergeStep() {
+		// merge nodes from first (heaviest) edge
+		if (dnaGraph==null) {
+			log("no graph available");
+			return;
 		}
-		return sb.toString();
+		// time measurement
+		long time = System.currentTimeMillis();
+		// merge step
+		ArrayList<Edge> sortedEdges = dnaGraph.hamiltonPath();
+		if (sortedEdges!=null) {
+			if (sortedEdges.isEmpty()) {
+				log("no edges in graph");
+			} else {
+				log("current hamilton path: " + sortedEdges);
+				Edge e = sortedEdges.get(Graph.getBiggest(sortedEdges));
+				log("merge nodes " + dnaGraph.getIndex(e.getTo()) + " and " + dnaGraph.getIndex(e.getFrom()) + ": " + e.toString());
+				// merge edge with biggest weight
+				dnaGraph.merge(e);
+				refreshInfoBox();
+			}
+		} else {
+			log(dnaGraph.printNodes()); // show nodes
+			ArrayList<Node> list = dnaGraph.getNodes();
+			if (list.size() > 1) {
+				log("\nDNA Sequence could not be assembled completely\nResults:");
+				for (Node n : list) log(n.toString());
+			} else if (list.size() == 1) {
+				log("\nDNA Sequence assembled\nResult:");
+				log(list.get(0).toString());
+			}
+		}
+		// time measurement
+		time = System.currentTimeMillis() - time;
+		log("time elapsed: " + time + "ms\n");
+	}
+	
+	// run assembler
+	private void runAssembler() {
+		if (dnaGraph==null) {
+			log("no graph available");
+		} else {
+			// time measurement
+			long time = System.currentTimeMillis();
+			// assemble
+			assembler = new Assembler(dnaGraph);
+			ArrayList<Sequence> list = assembler.run();
+			refreshInfoBox();
+			if (list.size() > 1) {
+				log("DNA Sequence could not be assembled completely\nResults:");
+				for (Sequence s : list) log(s.toString());
+			} else if (list.size() == 1) {
+				log("DNA Sequence assembled\nResult:");
+				log(list.get(0).toString());
+			} else {
+				log("Assembler did not provide any result. Something went wrong.");
+			}
+			// time measurement
+			time = System.currentTimeMillis() - time;
+			log("time elapsed: " + time + "ms\n");
+		}
 	}
 	
 	// run custom test
-	private void run_test() {
-		
+	private void runTest() {
 		String user = System.getProperty("user.name");
-		
 		if (txtFilepath!=null) txtFilepath.setText("C:\\users\\"+user+"\\frag.dat");
 		loadFile();
 		refreshInfoBox();
-		if (dnaGraph!=null) {
-			// show old (slow) algorithm
-			ArrayList<Edge> path = dnaGraph.hamiltonPath();
-			if (path==null) {
-				log("\n\nhamiltonPath() returned null");
-			} else {
-				log("\nhamilton path with biggest weight (" + Graph.getWeight(path) + ") for current graph:\n" + dnaGraph.printPath(path));
-			}
-			
-			// show new algorithm
-			int[][] matrix = dnaGraph.getAdjacencyMatrix();
-			HamiltonianPath hc = new HamiltonianPath();
-			try {				
-				log(printMatrix(matrix));
-				int[] intpath = hc.get(matrix);
-				String out = new String();
-				for (int i = 0; i < intpath.length; i++) {
-					out += String.valueOf(intpath[i]);
-				}
-				log("path: " + out);
-			} catch (Exception e) {
-				log(e.toString());
-			}
-			
-			// show nodes
-			log(dnaGraph.printNodes());
-		}
 	}
 	
 }
