@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,8 +21,6 @@ import net.miginfocom.swing.MigLayout;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
-
-import javax.swing.JCheckBox;
 
 public class GUI {
 
@@ -51,6 +50,7 @@ public class GUI {
 	private JLabel lblImageArea;
 	private JCheckBox chckbxShowIntermediateGraph;
 	private JButton btnTest;
+	private JLabel lblSpinner;
 	
 	
 	/**
@@ -88,7 +88,7 @@ public class GUI {
 		icon_logo = new ImageIcon(getClass().getResource("/graphics/dna_icon.png"));
 		frame.setIconImage(icon_logo.getImage());
 		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[50px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][][][][][30px:n][30px:n][10px:n][30px:n][30px:n]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[100px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][10px:n,grow][50px:n][20px:n][10px:n,grow][30px:n][30px:n][30px:n][10px:n,grow][30px:n][30px:n]"));
 		
 		// text pane
 		labelLog = new JLabel();
@@ -99,7 +99,7 @@ public class GUI {
 		
 		// scroll layout
 		scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, "cell 0 1 2 12,grow");
+		frame.getContentPane().add(scrollPane, "cell 0 1 2 13,grow");
 		
 		// text area in scroll layout
 		txtrLog = new JTextArea();
@@ -118,15 +118,21 @@ public class GUI {
 		lblImageArea = new JLabel(new ImageIcon(getClass().getResource("/graphics/dna_background.png")));
 		frame.getContentPane().add(lblImageArea, "cell 2 3 3 1,alignx center,aligny center");
 		
+		// spinner
+		lblSpinner = new JLabel();
+		lblSpinner.setVisible(false);
+		lblSpinner.setIcon(new ImageIcon(getClass().getResource("/graphics/spinner.gif")));
+		frame.getContentPane().add(lblSpinner, "cell 3 5,alignx center,aligny center");
+		
 		// busy label
 		lblBusy = new JLabel("ready");
 		lblBusy.setHorizontalAlignment(JLabel.CENTER);
 		lblBusy.setForeground(Color.GREEN);
-		frame.getContentPane().add(lblBusy, "cell 3 5,growx,aligny center");
+		frame.getContentPane().add(lblBusy, "cell 3 6,growx,aligny center");
 		
 		// checkbox for intermediate graph
 		chckbxShowIntermediateGraph = new JCheckBox("intermediate graph");
-		frame.getContentPane().add(chckbxShowIntermediateGraph, "cell 2 7,growx,aligny center");
+		frame.getContentPane().add(chckbxShowIntermediateGraph, "cell 2 8,growx,aligny center");
 		
 		// run assembler button
 		btnRunAssembler = new JButton("run assembler");
@@ -138,7 +144,7 @@ public class GUI {
 				runAssembler();
 			}
 		});
-		frame.getContentPane().add(btnRunAssembler, "cell 2 8,growx,aligny center");
+		frame.getContentPane().add(btnRunAssembler, "cell 2 9,growx,aligny center");
 		
 		// clear log button
 		btnClearLog = new JButton("clear log");
@@ -150,7 +156,7 @@ public class GUI {
 				clearLog();
 			}
 		});
-		frame.getContentPane().add(btnClearLog, "cell 2 9,growx,aligny center");
+		frame.getContentPane().add(btnClearLog, "cell 2 10,growx,aligny center");
 		
 		// sort button
 		btnSortEdges = new JButton("sort edges");
@@ -166,7 +172,7 @@ public class GUI {
 				}
 			}
 		});
-		frame.getContentPane().add(btnSortEdges, "cell 4 8,growx,aligny center");
+		frame.getContentPane().add(btnSortEdges, "cell 4 9,growx,aligny center");
 		
 		// merge button
 		btnMergeStep = new JButton("merge step");
@@ -178,7 +184,7 @@ public class GUI {
 				mergeStep();
 			}
 		});
-		frame.getContentPane().add(btnMergeStep, "cell 3 8,growx,aligny center");
+		frame.getContentPane().add(btnMergeStep, "cell 3 9,growx,aligny center");
 		
 		// button to show graph
 		btnShowGraph = new JButton("show graph");
@@ -190,7 +196,7 @@ public class GUI {
 				showGraph();
 			}
 		});
-		frame.getContentPane().add(btnShowGraph, "cell 4 9,growx,aligny center");
+		frame.getContentPane().add(btnShowGraph, "cell 4 10,growx,aligny center");
 				
 		// button to choose file
 		btnChoose = new JButton("select file");
@@ -201,7 +207,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile();
 		}});
-		frame.getContentPane().add(btnChoose, "cell 2 11,growx,aligny center");
+		frame.getContentPane().add(btnChoose, "cell 2 12,growx,aligny center");
 		
 		// load button
 		btnLoad = new JButton("load file");
@@ -214,13 +220,13 @@ public class GUI {
 				refreshInfoBox();
 			}
 		});
-		frame.getContentPane().add(btnLoad, "cell 4 11,growx,aligny center");
+		frame.getContentPane().add(btnLoad, "cell 4 12,growx,aligny center");
 
 		// file path text field
 		txtFilepath = new JTextField();
 		txtFilepath.setText("");
 		txtFilepath.setColumns(1);
-		frame.getContentPane().add(txtFilepath, "cell 2 12 3 1,growx");
+		frame.getContentPane().add(txtFilepath, "cell 2 13 3 1,growx");
 		
 		// test button
 		btnTest = new JButton("test");
@@ -232,7 +238,7 @@ public class GUI {
 				runTest();
 			}
 		});
-		frame.getContentPane().add(btnTest, "cell 3 9,growx,aligny center");
+		frame.getContentPane().add(btnTest, "cell 3 10,growx,aligny center");
 	}
 	
 	private void chooseFile() {
@@ -326,16 +332,18 @@ public class GUI {
 	
 	// change busy label to working
 	public void stateWorking() {
-		if (lblBusy==null) return;
-		lblBusy.setText("working");
+		if (lblBusy==null || lblSpinner==null) return;
+		lblBusy.setText(" working");
 		lblBusy.setForeground(Color.RED);
+		lblSpinner.setVisible(true);
 	}
 
 	// change busy label to ready
 	public void stateReady() {
-		if (lblBusy==null) return;
+		if (lblBusy==null || lblSpinner==null) return;
 		lblBusy.setText("ready");
 		lblBusy.setForeground(Color.GREEN);
+		lblSpinner.setVisible(false);
 	}
 	
 	// perform one merge step
