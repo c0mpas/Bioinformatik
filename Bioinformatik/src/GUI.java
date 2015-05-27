@@ -393,7 +393,7 @@ public class GUI {
 	// run custom test
 	private void runTest() {
 		String user = System.getProperty("user.name");
-		if (txtFilepath!=null) txtFilepath.setText("C:\\users\\"+user+"\\frag15.dat");
+		if (txtFilepath!=null) txtFilepath.setText("C:\\users\\"+user+"\\frag.dat");
 		loadFile();
 		refreshInfoBox();
 	}
