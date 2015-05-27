@@ -49,12 +49,6 @@ public class GUI {
 	private Graph dnaGraph;
 	private Assembler assembler;
 	
-//	// time measurement
-//	long time = System.currentTimeMillis();
-//	// time measurement
-//	time = System.currentTimeMillis() - time;
-//	log("time elapsed: " + time + "ms\n");	
-	
 	
 	/**
 	 * Launch the application.
@@ -367,34 +361,39 @@ public class GUI {
 	
 	// run assembler
 	private void runAssembler() {
-		if (dnaGraph==null) {
-			log("no graph available");
-		} else {
-			// time measurement
-			long time = System.currentTimeMillis();
-			// assemble
-			assembler = new Assembler(dnaGraph);
-			ArrayList<Sequence> list = assembler.run();
-			refreshInfoBox();
-			if (list.size() > 1) {
-				log("DNA Sequence could not be assembled completely\nResults:");
-				for (Sequence s : list) log(s.toString());
-			} else if (list.size() == 1) {
-				log("DNA Sequence assembled\nResult:");
-				log(list.get(0).toString());
-			} else {
-				log("Assembler did not provide any result. Something went wrong.");
+		Thread thread = new Thread() {
+			public void run(){
+				if (dnaGraph==null) {
+					log("no graph available");
+				} else {
+					// time measurement
+					long time = System.currentTimeMillis();
+					// assemble
+					assembler = new Assembler(dnaGraph);
+					ArrayList<Sequence> list = assembler.run();
+					refreshInfoBox();
+					if (list.size() > 1) {
+						log("DNA Sequence could not be assembled completely\nResults:");
+						for (Sequence s : list) log(s.toString());
+					} else if (list.size() == 1) {
+						log("DNA Sequence assembled\nResult:");
+						log(list.get(0).toString());
+					} else {
+						log("Assembler did not provide any result. Something went wrong.");
+					}
+					// time measurement
+					time = System.currentTimeMillis() - time;
+					log("\nassembler finished in " + time + "ms\n");
+				}
 			}
-			// time measurement
-			time = System.currentTimeMillis() - time;
-			log("time elapsed: " + time + "ms\n");
-		}
+		};
+		thread.start();
 	}
 	
 	// run custom test
 	private void runTest() {
 		String user = System.getProperty("user.name");
-		if (txtFilepath!=null) txtFilepath.setText("C:\\users\\"+user+"\\frag.dat");
+		if (txtFilepath!=null) txtFilepath.setText("C:\\users\\"+user+"\\frag15.dat");
 		loadFile();
 		refreshInfoBox();
 	}

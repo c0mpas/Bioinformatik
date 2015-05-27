@@ -86,9 +86,9 @@ public class Sequence {
 		String lseq = left.getSequence();
 		String rseq = right.getSequence();
 		String nseq = lseq + rseq.substring(left.overlap(right), rseq.length());
-		GUI.log("left sequence: " + lseq);
-		GUI.log("right sequence: " + rseq);
-		GUI.log("new sequence: " + nseq);
+		GUI.log("\nleft sequence:\t" + lseq);
+		GUI.log("right sequence:\t" + rseq);
+		GUI.log("new sequence:\t" + nseq);
 		return new Sequence(nseq);
 	}
 
