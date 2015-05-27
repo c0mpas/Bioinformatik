@@ -85,8 +85,6 @@ public class Graph {
 				}
 			}
 		}
-		GUI.log("\n\nchecked " + pathcount + " paths");
-		GUI.log("found " + hamiltoncount + " hamilton paths");
 		return currentHamilton;
 	}
 
@@ -121,6 +119,8 @@ public class Graph {
 		if (e==null) throw new IllegalArgumentException("edge is null");
 		GUI.log("merging: " + e);
 		Sequence s = Sequence.merge(e.getFrom().getSequence(), e.getTo().getSequence());
+		GUI.log("merged sequence: " + s);
+		
 		// remove nodes
 		this.removeNode(e.getTo());
 		this.removeNode(e.getFrom());

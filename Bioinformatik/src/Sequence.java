@@ -85,7 +85,7 @@ public class Sequence {
 		if (left==null || right==null) throw new IllegalArgumentException("sequence is null");
 		String lseq = left.getSequence();
 		String rseq = right.getSequence();
-		String nseq = lseq + rseq.substring(left.overlap(right)-1, rseq.length());
+		String nseq = lseq + rseq.substring(left.overlap(right), rseq.length());
 		GUI.log("left sequence: " + lseq);
 		GUI.log("right sequence: " + rseq);
 		GUI.log("new sequence: " + nseq);

@@ -25,7 +25,6 @@ public class GUI {
 
 	private static JTextArea txtrLog;
 	
-	
 	private JFrame frame;
 	private ImageIcon icon_logo;
 	private JScrollPane scrollPane;
