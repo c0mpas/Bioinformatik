@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Sebastian Schultheiﬂ und Christoph Geidt
+ *
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,12 +15,14 @@ public class Parser {
 	
 	private static final PrintStream out = System.err;
 	
-	public static final ArrayList<Sequence> parse(String filename) {
+	public static final Parameters parseParameters(String filename) {
 		if (filename == null) throw new IllegalArgumentException("filename empty");
 		File file = new File(filename);
         if (!file.canRead() || !file.isFile()) throw new RuntimeException("invalid file");
         BufferedReader in = null;
-        ArrayList<Sequence> list = new ArrayList<Sequence>();
+        
+        Parameters params = new Parameters();
+        ArrayList<String> list = new ArrayList<String>();
         
         try {
             in = new BufferedReader(new FileReader(filename));
@@ -22,7 +30,7 @@ public class Parser {
             while ((zeile = in.readLine()) != null) {
             	zeile = zeile.trim();
             	if (isValid(zeile)) {
-            		list.add(new Sequence(zeile));
+            		list.add(zeile);
             	} else {
             		out.println("invalid line (" + zeile + ")");
             	}
@@ -35,7 +43,42 @@ public class Parser {
                     in.close();
                 } catch (IOException e) {}
         }
-        return list;
+        
+        // convert list to parameters object
+        return params;
+    }
+	
+	public static final Parameters parseInput(String filename) {
+		if (filename == null) throw new IllegalArgumentException("filename empty");
+		File file = new File(filename);
+        if (!file.canRead() || !file.isFile()) throw new RuntimeException("invalid file");
+        BufferedReader in = null;
+        
+        Parameters params = new Parameters();
+        ArrayList<String> list = new ArrayList<String>();
+        
+        try {
+            in = new BufferedReader(new FileReader(filename));
+            String zeile = null;
+            while ((zeile = in.readLine()) != null) {
+            	zeile = zeile.trim();
+            	if (isValid(zeile)) {
+            		list.add(zeile);
+            	} else {
+            		out.println("invalid line (" + zeile + ")");
+            	}
+            } 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null)
+                try {
+                    in.close();
+                } catch (IOException e) {}
+        }
+        
+        // convert list to parameters object
+        return params;
     }
 	
 	private static final boolean isValid(String s) {
