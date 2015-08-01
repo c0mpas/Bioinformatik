@@ -67,18 +67,18 @@ public class GUI {
 	 */
 	public GUI() {
 		initialize();
+		initInput();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
 		// main frame
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Dice Master");
+		frame.setTitle("Hidden Markov Modell");
 		frame.getContentPane().setLayout(new MigLayout("", "[100px:n][50px:n,grow][100px:n:100px][100px:n:100px][100px:n:100px][20px:n:20px][50px:n][20px:n:20px]", "[20px:n][20px:n][50px:n,grow][grow][50px:n][20px:n][20px:n:20px][20px:n][50px:n,grow][grow][50px:n][20px:n][20px:n:20px]"));
 		
 		// log label
@@ -108,7 +108,6 @@ public class GUI {
 		frame.getContentPane().add(scrollPaneInput, "cell 2 2 3 3,grow");
 		// input text area
 		textAreaInput = new JTextArea();
-		textAreaInput.setText("\ninput");
 		scrollPaneInput.setViewportView(textAreaInput);
 		
 		// viterbi button
@@ -149,7 +148,6 @@ public class GUI {
 		frame.getContentPane().add(scrollPaneParameters, "cell 2 8 3 3,grow");
 		// parameters text area
 		textAreaParameters = new JTextArea();
-		textAreaParameters.setText("\nparameters");
 		scrollPaneParameters.setViewportView(textAreaParameters);
 		
 		// button to choose file
@@ -195,6 +193,14 @@ public class GUI {
 			}
 		});
 		frame.getContentPane().add(btnRForward, "cell 6 9,growx,aligny center");
+	}
+	
+	/**
+	 * Initialize the input fields with usable data
+	 */
+	private void initInput() {
+		textAreaInput.setText("315116246446644245311321631164152133625144543631656626566666651166453132651245636664631636663162326455236266666625151631222555441666566563564324364131513465146353411126414626253356366163666466232534413661661163252562462255265252266435353336233121625364414432335163243633665562466662632666612355245242");
+		textAreaParameters.setText("F 1/6 1/6 1/6 1/6 1/6 1/6\nU 1/10 1/10 1/10 1/10 1/10 1/2\nS 1/20");
 	}
 	
 	private String chooseFile() {
