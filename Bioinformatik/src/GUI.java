@@ -20,16 +20,18 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JTextPane;
 
 public class GUI {
 
 	private static JTextArea txtrLog;
-	private static JLabel lblBusy;
 
 	private JFrame frame;
-	private ImageIcon icon_logo;
-	private JScrollPane scrollPane;
-	private JLabel labelInfobox;
+	private JScrollPane scrollPaneLog;
+	private JScrollPane scrollPaneInput;
+	private JScrollPane scrollPaneParameters;
+	private JTextArea textAreaInput;
+	private JTextArea textAreaParameters;
 	private JButton btnChooseInput;
 	private JButton btnChooseParameters;
 	private JFileChooser chooser;
@@ -40,7 +42,8 @@ public class GUI {
 	private JButton btnRForward;
 	private JButton btnForward;
 	private JButton btnRSViterbi;
-	private JLabel lblSpinner;
+	private JLabel lblInput;
+	private JLabel lblParameters;
 	
 	
 	/**
@@ -70,129 +73,128 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		// main frame
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		icon_logo = new ImageIcon(getClass().getResource("/graphics/dna_icon.png"));
-		frame.setIconImage(icon_logo.getImage());
-		frame.setTitle("DNA Assembler");
-		frame.getContentPane().setLayout(new MigLayout("", "[100px:n][50px:n,grow][50px:n][50px:n][50px:n]", "[20px:n][][50px:n][grow][10px:n,grow][50px:n][20px:n][10px:n,grow][30px:n][30px:n][10px:n,grow][30px:n]"));
+		frame.setTitle("Dice Master");
+		frame.getContentPane().setLayout(new MigLayout("", "[100px:n][50px:n,grow][100px:n:100px][100px:n:100px][100px:n:100px][20px:n:20px][50px:n][20px:n:20px]", "[20px:n][20px:n][50px:n,grow][grow][50px:n][20px:n][20px:n:20px][20px:n][50px:n,grow][grow][50px:n][20px:n][20px:n:20px]"));
 		
-		// text pane
+		// log label
 		labelLog = new JLabel();
 		labelLog.setHorizontalAlignment(JLabel.CENTER);
 		labelLog.setVerticalAlignment(JLabel.CENTER);
 		labelLog.setText("Log");
 		frame.getContentPane().add(labelLog, "cell 0 0 2 1,grow");
 		
-		// scroll layout
-		scrollPane = new JScrollPane();
-		frame.getContentPane().add(scrollPane, "cell 0 1 2 11,grow");
-		
+		// scroll layout log
+		scrollPaneLog = new JScrollPane();
+		frame.getContentPane().add(scrollPaneLog, "cell 0 1 2 12,grow");
 		// text area in scroll layout
 		txtrLog = new JTextArea();
 		txtrLog.setText("\nWelcome!");
 		txtrLog.setEditable(false);
-		scrollPane.setViewportView(txtrLog);
-
-		// info text box
-		labelInfobox = new JLabel();
-		labelInfobox.setHorizontalAlignment(JLabel.CENTER);
-		labelInfobox.setVerticalAlignment(JLabel.TOP);
-		labelInfobox.setText("infobox");
-		frame.getContentPane().add(labelInfobox, "cell 2 0 3 3,grow");
+		scrollPaneLog.setViewportView(txtrLog);
 		
-		// busy label
-		lblBusy = new JLabel("ready");
-		lblBusy.setHorizontalAlignment(JLabel.CENTER);
-		lblBusy.setForeground(Color.GREEN);
-		frame.getContentPane().add(lblBusy, "cell 3 6,growx,aligny center");
+		// input label
+		lblInput = new JLabel("input");
+		lblInput.setHorizontalAlignment(JLabel.CENTER);
+		lblInput.setVerticalAlignment(JLabel.CENTER);
+		frame.getContentPane().add(lblInput, "cell 2 1 3 1,grow");
 		
-		// forward button
-		btnForward = new JButton("Forward");
-		btnForward.setHorizontalAlignment(SwingConstants.LEFT);
-		btnForward.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO
-			}
-		});
-		frame.getContentPane().add(btnForward, "cell 2 8,growx,aligny center");
-		
-		// rforward button
-		btnRForward = new JButton("R Forward");
-		btnRForward.setHorizontalAlignment(SwingConstants.LEFT);
-		btnRForward.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO
-			}
-		});
-		frame.getContentPane().add(btnRForward, "cell 3 8,growx,aligny center");
+		// scroll layout input
+		scrollPaneInput = new JScrollPane();
+		frame.getContentPane().add(scrollPaneInput, "cell 2 2 3 3,grow");
+		// input text area
+		textAreaInput = new JTextArea();
+		textAreaInput.setText("\ninput");
+		scrollPaneInput.setViewportView(textAreaInput);
 		
 		// viterbi button
 		btnViterbi = new JButton("Viterbi");
-		btnViterbi.setHorizontalAlignment(SwingConstants.LEFT);
 		btnViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO
 			}
 		});
-		frame.getContentPane().add(btnViterbi, "cell 2 9,growx,aligny center");
+		frame.getContentPane().add(btnViterbi, "cell 6 2,growx,aligny center");
 		
 		// rviterbi button
 		btnRViterbi = new JButton("R Viterbi");
-		btnRViterbi.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO
 			}
 		});
-		frame.getContentPane().add(btnRViterbi, "cell 3 9,growx,aligny center");
+		frame.getContentPane().add(btnRViterbi, "cell 6 3,growx,aligny center");
 		
 		// rsviterbi button
 		btnRSViterbi = new JButton("RS Viterbi");
-		btnRSViterbi.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRSViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO
 			}
 		});
-		frame.getContentPane().add(btnRSViterbi, "cell 4 9,growx,aligny center");
+		frame.getContentPane().add(btnRSViterbi, "cell 6 4,growx,aligny center");
+		
+		// parameters label
+		lblParameters = new JLabel("parameters");
+		lblParameters.setHorizontalAlignment(JLabel.CENTER);
+		lblParameters.setVerticalAlignment(JLabel.CENTER);
+		frame.getContentPane().add(lblParameters, "cell 2 7 3 1,grow");
+		
+		// scroll layout input
+		scrollPaneParameters = new JScrollPane();
+		frame.getContentPane().add(scrollPaneParameters, "cell 2 8 3 3,grow");
+		// parameters text area
+		textAreaParameters = new JTextArea();
+		textAreaParameters.setText("\nparameters");
+		scrollPaneParameters.setViewportView(textAreaParameters);
 		
 		// button to choose file
 		btnChooseInput = new JButton("load input");
-		btnChooseInput.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_open.png")));
-		btnChooseInput.setHorizontalAlignment(SwingConstants.LEFT);
-		btnChooseInput.setIconTextGap(20);
 		btnChooseInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				loadFileInput(chooseFile());
+				textAreaInput.setText(loadFile(chooseFile()));
 		}});
-		frame.getContentPane().add(btnChooseInput, "cell 2 11,growx,aligny center");
+		frame.getContentPane().add(btnChooseInput, "cell 2 5,growx,aligny center");
 		
-		// load button
-		btnChooseParameters = new JButton("load params");
-		btnChooseParameters.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_load.png")));
-		btnChooseParameters.setHorizontalAlignment(SwingConstants.LEFT);
-		btnChooseParameters.setIconTextGap(20);
-		btnChooseParameters.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loadFileParameters(chooseFile());
+		// forward button
+		btnForward = new JButton("Forward");
+		btnForward.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO
 			}
 		});
-		frame.getContentPane().add(btnChooseParameters, "cell 3 11,growx,aligny center");
+		frame.getContentPane().add(btnForward, "cell 6 8,growx,aligny center");
 		
 		// clear log button
 		btnClearLog = new JButton("clear log");
-		btnClearLog.setIcon(new ImageIcon(getClass().getResource("/graphics/icon_clear.png")));
-		btnClearLog.setHorizontalAlignment(SwingConstants.LEFT);
-		btnClearLog.setIconTextGap(20);
 		btnClearLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearLog();
 			}
 		});
-		frame.getContentPane().add(btnClearLog, "cell 4 11,growx,aligny center");
+		frame.getContentPane().add(btnClearLog, "cell 6 11,growx,aligny center");
+		
+		// load button
+		btnChooseParameters = new JButton("load params");
+		btnChooseParameters.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textAreaParameters.setText(loadFile(chooseFile()));
+			}
+		});
+		frame.getContentPane().add(btnChooseParameters, "cell 2 11,growx,aligny center");
+		
+		// rforward button
+		btnRForward = new JButton("R Forward");
+		btnRForward.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO
+			}
+		});
+		frame.getContentPane().add(btnRForward, "cell 6 9,growx,aligny center");
 	}
 	
 	private String chooseFile() {
@@ -209,44 +211,25 @@ public class GUI {
         }
 	}
 	
-	private void loadFileParameters(String path) {
+	private String loadFile(String path) {
 		if (path == null) {
 			log("invalid file path");
-			return;
+			return null;
 		}
 		log("loading " + path);
 		
-		Parameters params = null;
+		String file = null;
 		try {
-			params = Parser.parseParameters(path);
+			file = Parser.parse(path);
+			if (file != null) {
+				log("load successful");
+			} else {
+				log("error loading file");
+			}
 		} catch (Exception e) {
 			log(e.toString());
 		}
-		if (params == null) {
-			log("error loading file");
-		} else {
-			log("load successful");
-		}
-	}
-	
-	private void loadFileInput(String path) {
-		if (path == null) {
-			log("invalid file path");
-			return;
-		}
-		log("loading " + path);
-		
-		Parameters params = null;
-		try {
-			params = Parser.parseInput(path);
-		} catch (Exception e) {
-			log(e.toString());
-		}
-		if (params == null) {
-			log("error loading file");
-		} else {
-			log("load successful");
-		}
+		return file;
 	}
 	
 	public static void log(String text) {
@@ -257,33 +240,6 @@ public class GUI {
 	private void clearLog() {
 		if (txtrLog == null) return;
 		txtrLog.setText(null);
-	}
-	
-	// refresh info box and show current info about graph
-	private void refreshInfoBox() {
-		StringBuilder sb = new StringBuilder();
-		// TODO
-		sb.append("<html><body>infobox<br><br>");
-		sb.append("nodes: ");
-		sb.append("<br>edges: ");
-		sb.append("</body></html>");
-		labelInfobox.setText(sb.toString());
-	}
-	
-	// change busy label to working
-	public void stateWorking() {
-		if (lblBusy==null || lblSpinner==null) return;
-		lblBusy.setText(" working");
-		lblBusy.setForeground(Color.RED);
-		lblSpinner.setVisible(true);
-	}
-
-	// change busy label to ready
-	public void stateReady() {
-		if (lblBusy==null || lblSpinner==null) return;
-		lblBusy.setText("ready");
-		lblBusy.setForeground(Color.GREEN);
-		lblSpinner.setVisible(false);
 	}
 	
 }
