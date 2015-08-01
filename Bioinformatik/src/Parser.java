@@ -40,8 +40,22 @@ public class Parser {
 	public static final Parameters parseParameters(String input) {
 		if (input == null || input.isEmpty()) throw new IllegalArgumentException();
 		Parameters params = new Parameters();
-		String p = input.replace("\n", " ");
-		GUI.log(p);
+		String[] parts = input.split("\\s");
+
+		params.setStateOne(parts[0]);
+		for (int i = 1; i <= 6; i++) params.setpOne(i, parseDouble(parts[i]));
+		params.setStateTwo(parts[7]);
+		for (int i = 1; i <= 6; i++) params.setpOne(i, parseDouble(parts[i+7]));
+		params.setpSwitch(parseDouble(parts[14]));
+		
+		GUI.log(params.toString());
 		return params;
 	}
+	
+	private static final double parseDouble(String s) {
+		double d = 0.0;
+		String[] parts = s.split("/");
+		d = Integer.valueOf(parts[0]) / Integer.valueOf(parts[1]);
+		return d;
+	};
 }

@@ -41,7 +41,7 @@ public class Parameters {
 	}
 
 	public void setpOne(int i, double p) {
-		if (i < 1 || i > 6 || p < 0.0) throw new IllegalArgumentException();
+		if (i < 1 || i > 6 || p < 0.0) throw new IllegalArgumentException("i = " + i + " & p = " + p);
 		this.pOne[i-1] = p;
 	}
 
@@ -62,6 +62,18 @@ public class Parameters {
 	public void setpSwitch(double pSwitch) {
 		if (pSwitch < 0.0) throw new IllegalArgumentException();
 		this.pSwitch = pSwitch;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[ Parameters \n");
+		sb.append(stateOne).append(" ");
+		for (double d : pOne) sb.append(d).append(" ");
+		sb.append("\n");
+		sb.append(stateTwo).append(" ");
+		for (double d : pTwo) sb.append(d).append(" ");
+		sb.append("\n").append(pSwitch).append(" ]");
+		return sb.toString();
 	}
 
 }
