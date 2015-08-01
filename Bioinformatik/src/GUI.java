@@ -114,7 +114,7 @@ public class GUI {
 		btnViterbi = new JButton("Viterbi");
 		btnViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO
+				HMM.viterbi(parseInput(), parseParameters());
 			}
 		});
 		frame.getContentPane().add(btnViterbi, "cell 6 2,growx,aligny center");
@@ -123,7 +123,7 @@ public class GUI {
 		btnRViterbi = new JButton("R Viterbi");
 		btnRViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO
+				HMM.viterbi(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
 			}
 		});
 		frame.getContentPane().add(btnRViterbi, "cell 6 3,growx,aligny center");
@@ -132,7 +132,7 @@ public class GUI {
 		btnRSViterbi = new JButton("RS Viterbi");
 		btnRSViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO
+				HMM.rsviterbi(parseInput(), parseParameters());
 			}
 		});
 		frame.getContentPane().add(btnRSViterbi, "cell 6 4,growx,aligny center");
@@ -162,7 +162,7 @@ public class GUI {
 		btnForward = new JButton("Forward");
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO
+				HMM.forward(parseInput(), parseParameters());
 			}
 		});
 		frame.getContentPane().add(btnForward, "cell 6 8,growx,aligny center");
@@ -189,12 +189,20 @@ public class GUI {
 		btnRForward = new JButton("R Forward");
 		btnRForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO
+				HMM.forward(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
 			}
 		});
 		frame.getContentPane().add(btnRForward, "cell 6 9,growx,aligny center");
 	}
 	
+	private Parameters parseParameters() {
+		return Parser.parseParameters(textAreaParameters.getText());
+	}
+
+	private String parseInput() {
+		return textAreaInput.getText();
+	}
+
 	/**
 	 * Initialize the input fields with usable data
 	 */

@@ -36,5 +36,12 @@ public class Parser {
         }
         return sb.toString();
     }
-		
+	
+	public static final Parameters parseParameters(String input) {
+		if (input == null || input.isEmpty()) throw new IllegalArgumentException();
+		Parameters params = new Parameters();
+		String p = input.replace("\n", " ");
+		GUI.log(p);
+		return params;
+	}
 }
