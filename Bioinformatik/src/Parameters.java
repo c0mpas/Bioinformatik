@@ -21,12 +21,12 @@ public class Parameters {
 	};
 	
 	public double getP(int state, int i) {
-		double value;
-		if(state == HMM.FAIR){
+		double value = ZERO;
+		if (state == HMM.FAIR) {
 			value = getpOne(i);
-		}else if(state == HMM.UNFAIR){
+		} else if (state == HMM.UNFAIR) {
 			value = getpTwo(i);
-		}else{
+		} else {
 			throw new IllegalArgumentException();
 		}
 		return value;

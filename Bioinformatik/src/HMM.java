@@ -26,24 +26,35 @@ public class HMM {
 		double chanceOne = chances[position-1][state] * parameters.getpNoSwitch();
 		double chanceTwo = chances[position-1][state] * parameters.getpSwitch();
 		double factor1 = (chanceOne>chanceTwo)? chanceOne : chanceTwo;
-		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position-1,position)));
+		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position,position+1)));
 		return factor1*factor2;
 	}
 	
 	private String getPath(double[][] chances) {
-		return null;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < chances.length; i++) {
+			if (chances[i][FAIR] > chances[i][UNFAIR]) {
+				sb.append("F");
+			} else if (chances[i][FAIR] < chances[i][UNFAIR]) {
+				sb.append("U");
+			} else {
+				// both are equal
+				sb.append("E");
+			}
+		}
+		return sb.toString();
 	}
 	
 	public String viterbi() {
 		log(input, parameters);
 		
-		chances = new double[input.length()+1][2];
+		chances = new double[input.length()][2];
 		
 		// compute first values for step 1 and q0
 		chances[0][FAIR] = parameters.getpOne(Integer.valueOf(input.substring(0,1))) * 0.5d;
 		chances[0][UNFAIR] = parameters.getpTwo(Integer.valueOf(input.substring(0,1))) * 0.5d;
 		
-		for (int i = 1; i <= input.length(); i++) {
+		for (int i = 1; i < input.length(); i++) {
 			// compute chance for both states at current position
 			chances[i][FAIR] = computeChance(i, FAIR);
 			chances[i][UNFAIR] = computeChance(i, UNFAIR);
