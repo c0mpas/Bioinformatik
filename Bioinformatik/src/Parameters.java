@@ -20,6 +20,18 @@ public class Parameters {
 		pNoSwitch = ZERO;
 	};
 	
+	public double getP(int state, int i) {
+		double value;
+		if(state == HMM.FAIR){
+			value = getpOne(i);
+		}else if(state == HMM.UNFAIR){
+			value = getpTwo(i);
+		}else{
+			throw new IllegalArgumentException();
+		}
+		return value;
+	}
+	
 	public String getStateOne() {
 		return stateOne;
 	}

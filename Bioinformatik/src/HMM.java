@@ -1,8 +1,8 @@
 
 public class HMM {
 
-	private static final int FAIR = 0;
-	private static final int UNFAIR = 1;
+	public static final int FAIR = 0;
+	public static final int UNFAIR = 1;
 	
 	private double[][] chances;
 	private Parameters parameters;
@@ -25,7 +25,9 @@ public class HMM {
 	private double computeChance(int position, int state) {
 		double chanceOne = chances[position-1][state] * parameters.getpNoSwitch();
 		double chanceTwo = chances[position-1][state] * parameters.getpSwitch();
-		return (chanceOne>chanceTwo)? chanceOne : chanceTwo;
+		double factor1 = (chanceOne>chanceTwo)? chanceOne : chanceTwo;
+		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position-1,position)));
+		return factor1*factor2;
 	}
 	
 	private String getPath(double[][] chances) {
