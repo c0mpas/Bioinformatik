@@ -2,19 +2,22 @@
 public class Parameters {
 
 	private static final int cap = 6;
+	private static final double ZERO = 0.0d;
 	
 	private String stateOne;
 	private String stateTwo;
 	private double[] pOne;
 	private double[] pTwo;
 	private double pSwitch;
+	private double pNoSwitch;
 	
 	public Parameters() {
 		stateOne = null;
 		stateTwo = null;
 		pOne = new double[cap];
 		pTwo = new double[cap];
-		pSwitch = 0.0;
+		pSwitch = ZERO;
+		pNoSwitch = ZERO;
 	};
 	
 	public String getStateOne() {
@@ -41,7 +44,7 @@ public class Parameters {
 	}
 
 	public void setpOne(int i, double p) {
-		if (i < 1 || i > 6 || p < 0.0) throw new IllegalArgumentException("i = " + i + " & p = " + p);
+		if (i < 1 || i > 6 || p < ZERO) throw new IllegalArgumentException("i = " + i + " & p = " + p);
 		this.pOne[i-1] = p;
 	}
 
@@ -51,7 +54,7 @@ public class Parameters {
 	}
 
 	public void setpTwo(int i, double p) {
-		if (i < 1 || i > 6 || p < 0.0) throw new IllegalArgumentException();
+		if (i < 1 || i > 6 || p < ZERO) throw new IllegalArgumentException();
 		this.pTwo[i-1] = p;
 	}
 
@@ -59,9 +62,14 @@ public class Parameters {
 		return pSwitch;
 	}
 
+	public double getpNoSwitch() {
+		return pNoSwitch;
+	}
+
 	public void setpSwitch(double pSwitch) {
-		if (pSwitch < 0.0) throw new IllegalArgumentException();
+		if (pSwitch < ZERO) throw new IllegalArgumentException();
 		this.pSwitch = pSwitch;
+		this.pNoSwitch = 1.0d - pSwitch;
 	}
 	
 	public String toString() {

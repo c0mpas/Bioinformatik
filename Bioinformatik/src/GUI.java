@@ -114,7 +114,9 @@ public class GUI {
 		btnViterbi = new JButton("Viterbi");
 		btnViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HMM.viterbi(parseInput(), parseParameters());
+				HMM hmm = new HMM(parseInput(), parseParameters());
+				hmm.viterbi();
+				log(hmm.logChances());
 			}
 		});
 		frame.getContentPane().add(btnViterbi, "cell 6 2,growx,aligny center");
@@ -123,7 +125,8 @@ public class GUI {
 		btnRViterbi = new JButton("R Viterbi");
 		btnRViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HMM.viterbi(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
+				HMM hmm = new HMM(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
+				hmm.viterbi();
 			}
 		});
 		frame.getContentPane().add(btnRViterbi, "cell 6 3,growx,aligny center");
@@ -132,7 +135,8 @@ public class GUI {
 		btnRSViterbi = new JButton("RS Viterbi");
 		btnRSViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HMM.rsviterbi(parseInput(), parseParameters());
+				HMM hmm = new HMM(parseInput(), parseParameters());
+				hmm.rsviterbi();
 			}
 		});
 		frame.getContentPane().add(btnRSViterbi, "cell 6 4,growx,aligny center");
@@ -162,7 +166,8 @@ public class GUI {
 		btnForward = new JButton("Forward");
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HMM.forward(parseInput(), parseParameters());
+				HMM hmm = new HMM(parseInput(), parseParameters());
+				hmm.forward();
 			}
 		});
 		frame.getContentPane().add(btnForward, "cell 6 8,growx,aligny center");
@@ -189,7 +194,8 @@ public class GUI {
 		btnRForward = new JButton("R Forward");
 		btnRForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				HMM.forward(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
+				HMM hmm = new HMM(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
+				hmm.forward();
 			}
 		});
 		frame.getContentPane().add(btnRForward, "cell 6 9,growx,aligny center");
