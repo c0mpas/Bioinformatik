@@ -4,23 +4,19 @@
  *
  */
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JTextPane;
 
 public class GUI {
 
@@ -115,8 +111,7 @@ public class GUI {
 		btnViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				HMM hmm = new HMM(parseInput(), parseParameters());
-				log(hmm.viterbi());
-				log(hmm.logChances());
+				log(hmm.viterbiLog());
 			}
 		});
 		frame.getContentPane().add(btnViterbi, "cell 6 2,growx,aligny center");
@@ -126,7 +121,7 @@ public class GUI {
 		btnRViterbi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				HMM hmm = new HMM(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
-				hmm.viterbi();
+				log(hmm.viterbiLog());
 			}
 		});
 		frame.getContentPane().add(btnRViterbi, "cell 6 3,growx,aligny center");
@@ -167,7 +162,7 @@ public class GUI {
 		btnForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				HMM hmm = new HMM(parseInput(), parseParameters());
-				hmm.forward();
+				log(hmm.forward());
 			}
 		});
 		frame.getContentPane().add(btnForward, "cell 6 8,growx,aligny center");
@@ -195,7 +190,7 @@ public class GUI {
 		btnRForward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				HMM hmm = new HMM(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
-				hmm.forward();
+				log(hmm.forward());
 			}
 		});
 		frame.getContentPane().add(btnRForward, "cell 6 9,growx,aligny center");
@@ -213,8 +208,8 @@ public class GUI {
 	 * Initialize the input fields with usable data
 	 */
 	private void initInput() {
-		// textAreaInput.setText("315116246446644245311321631164152133625144543631656626566666651166453132651245636664631636663162326455236266666625151631222555441666566563564324364131513465146353411126414626253356366163666466232534413661661163252562462255265252266435353336233121625364414432335163243633665562466662632666612355245242");
-		textAreaInput.setText("216664");
+		textAreaInput.setText("315116246446644245311321631164152133625144543631656626566666651166453132651245636664631636663162326455236266666625151631222555441666566563564324364131513465146353411126414626253356366163666466232534413661661163252562462255265252266435353336233121625364414432335163243633665562466662632666612355245242");
+		// textAreaInput.setText("216664");
 		textAreaParameters.setText("F 1/6 1/6 1/6 1/6 1/6 1/6\nU 1/10 1/10 1/10 1/10 1/10 1/2\n1/20");
 	}
 	

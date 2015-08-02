@@ -32,6 +32,15 @@ public class Parameters {
 		return value;
 	}
 	
+	public void logarithmize() {
+		pSwitch = Math.log(pSwitch);
+		pNoSwitch = Math.log(pNoSwitch);
+		for (int i = 0; i < cap; i++) {
+			pOne[i] = Math.log(pOne[i]);
+			pTwo[i] = Math.log(pTwo[i]);
+		}
+	}
+	
 	public String getStateOne() {
 		return stateOne;
 	}
