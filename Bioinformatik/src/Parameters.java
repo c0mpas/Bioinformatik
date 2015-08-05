@@ -21,6 +21,7 @@ public class Parameters {
 	};
 	
 	public double getP(int state, int i) {
+		if (state < 0 || i < 0) throw new IllegalArgumentException();
 		double value = ZERO;
 		if (state == HMM.FAIR) {
 			value = getpOne(i);

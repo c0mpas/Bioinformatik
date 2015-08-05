@@ -15,23 +15,42 @@ public class HMM {
 		this.parameters = params;
 	}
 	
-	private double computeChance(int position, int state) {
+	private double computeChanceViterbi(int position, int state) {
+		if (!isValidState(state) || position < 0) throw new IllegalArgumentException();
 		double chanceOne = chances[position-1][state] * parameters.getpNoSwitch();
-		double chanceTwo = chances[position-1][state] * parameters.getpSwitch();
+		double chanceTwo = chances[position-1][invertState(state)] * parameters.getpSwitch();
 		double factor1 = (chanceOne>chanceTwo)? chanceOne : chanceTwo;
 		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position,position+1)));
-		return factor1*factor2;
+		return factor1 * factor2;
 	}
 	
-	private double computeChanceLog(int position, int state) {
+	private double computeChanceViterbiLog(int position, int state) {
+		if (!isValidState(state) || position < 0) throw new IllegalArgumentException();
 		double chanceOne = chances[position-1][state] + parameters.getpNoSwitch();
-		double chanceTwo = chances[position-1][state] + parameters.getpSwitch();
+		double chanceTwo = chances[position-1][invertState(state)] + parameters.getpSwitch();
 		double factor1 = (chanceOne>chanceTwo)? chanceOne : chanceTwo;
 		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position,position+1)));
 		return factor1 + factor2;
 	}
 
-	private String getPathViterbi() {
+	private double computeChanceForward(int position, int state) {
+		if (!isValidState(state) || position < 0) throw new IllegalArgumentException();
+		double chanceOne = chances[position-1][state] * parameters.getpNoSwitch();
+		double chanceTwo = chances[position-1][invertState(state)] * parameters.getpSwitch();
+		double factor1 = chanceOne + chanceTwo;
+		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position,position+1)));
+		return factor1 * factor2;
+	}
+	
+	private int invertState(int state) {
+		if (isValidState(state)) {
+			return (state == FAIR)? UNFAIR : FAIR;
+		} else {
+			throw new IllegalArgumentException("invalid state");
+		}
+	}
+	
+	private String getPath() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < chances.length; i++) {
 			if (chances[i][FAIR] >= chances[i][UNFAIR]) {
@@ -43,18 +62,6 @@ public class HMM {
 		return sb.toString();
 	}
 
-	private String getPathForward() {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < chances.length; i++) {
-			if (chances[i][FAIR] >= chances[i][UNFAIR]) {
-				sb.append(parameters.getStateOne());
-			} else {
-				sb.append(parameters.getStateTwo());
-			}
-		}
-		return sb.toString();
-	}
-	
 	public String viterbi() {
 		log(input, parameters);
 		
@@ -66,12 +73,12 @@ public class HMM {
 		
 		for (int i = 1; i < input.length(); i++) {
 			// compute chance for both states at current position
-			chances[i][FAIR] = computeChance(i, FAIR);
-			chances[i][UNFAIR] = computeChance(i, UNFAIR);
+			chances[i][FAIR] = computeChanceViterbi(i, FAIR);
+			chances[i][UNFAIR] = computeChanceViterbi(i, UNFAIR);
 		}
 		
 		GUI.log(logChances());
-		return getPathViterbi();
+		return getPath();
 	}
 
 	public String viterbiLog() {
@@ -86,12 +93,12 @@ public class HMM {
 		
 		for (int i = 1; i < input.length(); i++) {
 			// compute chance for both states at current position
-			chances[i][FAIR] = computeChanceLog(i, FAIR);
-			chances[i][UNFAIR] = computeChanceLog(i, UNFAIR);
+			chances[i][FAIR] = computeChanceViterbiLog(i, FAIR);
+			chances[i][UNFAIR] = computeChanceViterbiLog(i, UNFAIR);
 		}
 		
 		GUI.log(logChances());
-		return getPathViterbi();
+		return getPath();
 	}
 	
 	public String rsviterbi() {
@@ -101,13 +108,34 @@ public class HMM {
 	}
 
 	public String forward() {
-		viterbi();
+		log(input, parameters);
+		
+		chances = new double[input.length()][2];
+		
+		// compute first values for step 1 and q0
+		chances[0][FAIR] = parameters.getpOne(Integer.valueOf(input.substring(0,1))) * 0.5d;
+		chances[0][UNFAIR] = parameters.getpTwo(Integer.valueOf(input.substring(0,1))) * 0.5d;
+		
+		for (int i = 1; i < input.length(); i++) {
+			// compute chance for both states at current position
+			chances[i][FAIR] = computeChanceForward(i, FAIR);
+			chances[i][UNFAIR] = computeChanceForward(i, UNFAIR);
+		}
 		
 		GUI.log(logChances());
-		return getPathForward();
+		return getPath();
+	}
+	
+	private boolean isValidState(int state) {
+		if (state == FAIR || state == UNFAIR) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	private void log(String input, Parameters params) {
+		if (input == null || params == null) return;
 		GUI.log("\ninput = " + input);
 		GUI.log("params = " + params.toString() + "\n");
 	};
