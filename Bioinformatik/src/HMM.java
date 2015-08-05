@@ -102,9 +102,24 @@ public class HMM {
 	}
 	
 	public String rsviterbi() {
+		// TODO
 		log(input, parameters);
+		
+		parameters.logarithmize();
+		chances = new double[input.length()][2];
+		
+		// compute first values for step 1 and q0
+		chances[0][FAIR] = parameters.getpOne(Integer.valueOf(input.substring(0,1))) + Math.log(0.5d);
+		chances[0][UNFAIR] = parameters.getpTwo(Integer.valueOf(input.substring(0,1))) + Math.log(0.5d);
+		
+		for (int i = 1; i < input.length(); i++) {
+			// compute chance for both states at current position
+			chances[i][FAIR] = computeChanceViterbiLog(i, FAIR);
+			chances[i][UNFAIR] = computeChanceViterbiLog(i, UNFAIR);
+		}
+		
 		GUI.log(logChances());
-		return null;
+		return getPath();
 	}
 
 	public String forward() {

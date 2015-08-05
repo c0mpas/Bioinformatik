@@ -114,7 +114,7 @@ public class GUI {
 					HMM hmm = new HMM(parseInput(), parseParameters());
 					log(hmm.viterbiLog());
 				} catch (Exception e) {
-					log(e.getMessage());
+					log(e.toString());
 				}
 			}
 		});
@@ -128,7 +128,7 @@ public class GUI {
 					HMM hmm = new HMM(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
 					log(hmm.viterbiLog());
 				} catch (Exception e) {
-					log(e.getMessage());
+					log(e.toString());
 				}
 			}
 		});
@@ -142,7 +142,7 @@ public class GUI {
 					HMM hmm = new HMM(parseInput(), parseParameters());
 					hmm.rsviterbi();
 				} catch (Exception e) {
-					log(e.getMessage());
+					log(e.toString());
 				}
 			}
 		});
@@ -177,7 +177,7 @@ public class GUI {
 					HMM hmm = new HMM(parseInput(), parseParameters());
 					log(hmm.forward());
 				} catch (Exception e) {
-					log(e.getMessage());
+					log(e.toString());
 				}
 			}
 		});
@@ -199,7 +199,7 @@ public class GUI {
 				try {
 					textAreaParameters.setText(loadFile(chooseFile()));
 				} catch (Exception ex) {
-					log(ex.getMessage());
+					log(ex.toString());
 				}
 			}
 		});
@@ -213,7 +213,7 @@ public class GUI {
 					HMM hmm = new HMM(new StringBuilder(parseInput()).reverse().toString(), parseParameters());
 					log(hmm.forward());
 				} catch (Exception e) {
-					log(e.getMessage());
+					log(e.toString());
 				}
 			}
 		});
@@ -272,7 +272,7 @@ public class GUI {
 	}
 	
 	public static void log(String text) {
-		if (txtrLog==null || text.isEmpty()) return;
+		if (txtrLog==null || text == null || text.isEmpty()) return;
 		txtrLog.append("\n" + text);
 	}
 	
