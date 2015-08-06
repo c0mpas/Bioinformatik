@@ -12,6 +12,7 @@ import java.io.PrintStream;
 
 public class Parser {
 	
+	@SuppressWarnings("unused")
 	private static final PrintStream out = System.err;
 	
 	public static final String parse(String filename) {

@@ -3,6 +3,7 @@ public class HMM {
 
 	public static final int FAIR = 0;
 	public static final int UNFAIR = 1;
+	public static final double FACTOR = 6.0d;
 	
 	private double[][] chances;
 	private Parameters parameters;
@@ -39,7 +40,7 @@ public class HMM {
 		double chanceTwo = chances[position-1][invertState(state)] * parameters.getpSwitch();
 		double factor1 = chanceOne + chanceTwo;
 		double factor2 = parameters.getP(state, Integer.valueOf(input.substring(position,position+1)));
-		return factor1 * factor2;
+		return factor1 * factor2 * FACTOR;
 	}
 	
 	private int invertState(int state) {
@@ -128,8 +129,8 @@ public class HMM {
 		chances = new double[input.length()][2];
 		
 		// compute first values for step 1 and q0
-		chances[0][FAIR] = parameters.getpOne(Integer.valueOf(input.substring(0,1))) * 0.5d;
-		chances[0][UNFAIR] = parameters.getpTwo(Integer.valueOf(input.substring(0,1))) * 0.5d;
+		chances[0][FAIR] = parameters.getpOne(Integer.valueOf(input.substring(0,1))) * 0.5d * FACTOR;
+		chances[0][UNFAIR] = parameters.getpTwo(Integer.valueOf(input.substring(0,1))) * 0.5d * FACTOR;
 		
 		for (int i = 1; i < input.length(); i++) {
 			// compute chance for both states at current position
