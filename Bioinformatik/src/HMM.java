@@ -63,6 +63,18 @@ public class HMM {
 		return sb.toString();
 	}
 
+	private String getRPath() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < chances.length; i++) {
+			if (chances[i][UNFAIR] >= chances[i][FAIR]) {
+				sb.append(parameters.getStateTwo());
+			} else {
+				sb.append(parameters.getStateOne());
+			}
+		}
+		return sb.toString();
+	}
+
 	public String viterbi() {
 		log(input, parameters);
 		
@@ -103,7 +115,6 @@ public class HMM {
 	}
 	
 	public String rsviterbi() {
-		// TODO
 		log(input, parameters);
 		
 		parameters.logarithmize();
@@ -120,7 +131,7 @@ public class HMM {
 		}
 		
 		GUI.log(logChances());
-		return getPath();
+		return getRPath();
 	}
 
 	public String forward() {

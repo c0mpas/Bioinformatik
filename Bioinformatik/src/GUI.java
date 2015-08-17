@@ -140,7 +140,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					HMM hmm = new HMM(parseInput(), parseParameters());
-					hmm.rsviterbi();
+					log(hmm.rsviterbi());
 				} catch (Exception e) {
 					log(e.toString());
 				}
